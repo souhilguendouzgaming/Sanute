@@ -1,0 +1,91 @@
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #000;
+  color: #fff;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+.logo {
+  height: 50px;
+}
+.cart-icon {
+  height: 40px;
+  cursor: pointer;
+}
+.product {
+  text-align: center;
+  padding: 2rem;
+}
+.product-img {
+  max-width: 300px;
+}
+.price del {
+  color: #888;
+}
+button {
+  padding: 0.7rem 1.5rem;
+  background: #fff;
+  color: #000;
+  border: none;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+.cart-panel, .form-panel, .payment-panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  color: #000;
+  padding: 1rem;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+  z-index: 1001;
+}
+.cart-panel.active, .form-panel.active, .payment-panel.active {
+  right: 0;
+}
+.cart-item {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.cart-item img {
+  width: 60px;
+}
+.quantity {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+}
+.overlay.active {
+  display: block;
+}
+.payment-options {
+  display: flex;
+  justify-content: space-around;
+  margin: 1rem 0;
+}
+.payment-options img {
+  width: 50px;
+}
+input {
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}

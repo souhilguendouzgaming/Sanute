@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AirFlow - Fan & Humidifier</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    }
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s forwards;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .pulse-button {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(34,197,94, 0.7);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px 10px rgba(34,197,94, 0);
+      }
+    }
+    .discount-badge {
+      animation: moveLeftRight 3s infinite ease-in-out;
+    }
+    @keyframes moveLeftRight {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(10px); }
+    }
+    /* Modal Styles */
+    .modal-bg {
+      background: rgba(0,0,0,0.5);
+    }
+    .modal {
+      transition: all 0.3s ease-in-out;
+      max-height: 90vh; /* Limit height to 90% of viewport height */
+      overflow-y: auto; /* Enable vertical scrolling if content overflows */
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+
+    /* Custom styles for intl-tel-input */
+    .iti { width: 100%; } /* Make it take full width of parent */
+    .iti__country-list {
+        z-index: 1000; /* Ensure the country dropdown appears above other elements */
+    }
+    .iti__flag-container {
+        padding-right: 0 !important; /* Remove default padding to let input control it */
+    }
+    .iti__selected-flag {
+        height: 100%; /* Make flag fill the container */
+    }
+    .iti__arrow {
+        border-top-color: #374151; /* Darken arrow for visibility */
+    }
+    /* Style for PayPal buttons container to ensure it's visible */
+    #paypal-button-container {
+        min-height: 50px; 
+        display: flex;
+        justify-content: center; 
+        align-items: center;
+        width: 100%;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 text-gray-900 relative">
+
+  <header class="w-full max-w-5xl mb-6 flex items-center justify-start p-4">
+    <img src="logo.png" alt="Store Logo" class="h-16 object-contain" />
+  </header>
+
+  <div class="bg-white rounded-3xl shadow-2xl max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 overflow-hidden">
+    <div class="p-10 flex flex-col justify-center space-y-6 fade-in-up" style="animation-delay: 0.2s">
+      <h1 class="text-5xl font-extrabold leading-tight text-green-600">Cool Your Air, Breathe Fresh</h1>
+      <p class="text-lg text-gray-700">Introducing the 2-in-1 AirFlow Fan & Humidifier. Perfect for summer days and dry nights.</p>
+      
+      <div class="flex items-center space-x-4">
+        <span class="text-xl line-through text-gray-400">$50</span>
+        <span class="text-4xl font-bold text-green-600">$25</span>
+        <span class="discount-badge bg-green-100 text-green-600 px-3 py-1 rounded-full font-semibold select-none">50% OFF</span>
+      </div>
+      
+      <button id="orderBtn" class="pulse-button bg-green-600 text-white text-xl rounded-xl py-3 px-10 font-semibold hover:bg-green-700 transition duration-300 shadow-lg">
+        Order Now
+      </button>
+      
+      <p class="text-sm text-gray-500">Limited time offer. While stocks last!</p>
+
+      <div class="flex space-x-4 mt-6">
+        <div class="text-center">
+          <span id="days" class="block text-3xl font-bold text-green-700">00</span>
+          <span class="text-sm text-gray-500">Hours</span>
+        </div>
+        <div class="text-center">
+          <span id="hours" class="block text-3xl font-bold text-green-700">00</span>
+          <span class="text-sm text-gray-500">Hours</span>
+        </div>
+        <div class="text-center">
+          <span id="minutes" class="block text-3xl font-bold text-green-700">00</span>
+          <span class="text-sm text-gray-500">Minutes</span>
+        </div>
+        <div class="text-center">
+          <span id="seconds" class="block text-3xl font-bold text-green-700">00</span>
+          <span class="text-sm text-gray-500">Seconds</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative overflow-hidden">
+      <img src="heros.png" 
+           alt="Fan Humidifier" 
+           class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500 ease-in-out" />
+      <div class="absolute top-6 left-6 bg-green-600 text-white font-extrabold px-5 py-2 rounded-full shadow-lg select-none discount-badge">
+        50% OFF
+      </div>
+    </div>
+  </div>
+
+  <div id="orderModal" class="fixed inset-0 hidden modal-bg z-50 overflow-auto p-6 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6 modal">
+      
+      <div id="orderSummary" data-step-id="orderSummary">
+        <h2 class="text-2xl font-extrabold mb-4 text-green-700">Your Order</h2>
+        <div class="flex items-center space-x-4">
+          <img src="heros.png" alt="Fan Humidifier" class="w-24 h-24 rounded-lg object-cover shadow-md" />
+          <div class="flex-grow">
+            <h3 class="font-semibold text-lg">AirFlow Fan & Humidifier</h3>
+            <div class="mt-2 flex items-center space-x-2">
+              <button id="decreaseQty" class="bg-green-600 text-white rounded px-3 py-1 font-bold hover:bg-green-700 transition">−</button>
+              <span id="quantity" class="text-xl font-semibold">1</span>
+              <button id="increaseQty" class="bg-green-600 text-white rounded px-3 py-1 font-bold hover:bg-green-700 transition">+</button>
+            </div>
+            <p class="text-xl font-bold text-green-600 mt-2">Total: $<span id="totalPrice">25</span></p>
+          </div>
+        </div>
+        <button id="confirmOrder" class="mt-6 w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-lg">
+          Confirm Order
+        </button>
+        <button id="closeModal" class="mt-3 w-full text-center text-green-600 hover:underline">
+          Cancel
+        </button>
+      </div>
+
+      <form id="userDetailsForm" data-step-id="userDetailsForm" class="hidden flex flex-col space-y-4" novalidate>
+        <h2 class="text-2xl font-extrabold mb-4 text-green-700">Enter Your Details</h2>
+
+        <div>
+          <label for="firstName" class="block font-semibold mb-1">First Name</label>
+          <input type="text" id="firstName" name="firstName" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+        </div>
+
+        <div>
+          <label for="lastName" class="block font-semibold mb-1">Last Name</label>
+          <input type="text" id="lastName" name="lastName" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+        </div>
+
+        <div>
+          <label for="phone" class="block font-semibold mb-1">Phone Number</label>
+          <input type="tel" id="phone" name="phone" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+        </div>
+
+        <div>
+          <label for="instagram" class="block font-semibold mb-1">Instagram Handle</label>
+          <input type="text" id="instagram" name="instagram" placeholder="@yourhandle" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+        </div>
+
+        <div>
+          <label for="district" class="block font-semibold mb-1">District / حي السكن</label>
+          <input type="text" id="district" name="district" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+        </div>
+
+        <div>
+          <label for="postalCode" class="block font-semibold mb-1">Postal Code</label>
+          <input type="text" id="postalCode" name="postalCode" required pattern="[0-9]{3,10}" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+        </div>
+
+        <button type="submit" class="mt-4 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-lg">
+          Proceed to Payment
+        </button>
+        <button type="button" id="backToSummary" class="mt-2 text-green-600 hover:underline">
+          Back to Order Summary
+        </button>
+      </form>
+
+      <div id="paypalPaymentSection" data-step-id="paypalPaymentSection" class="hidden flex flex-col space-y-4">
+        <h2 class="text-2xl font-extrabold mb-4 text-green-700 text-center">Complete Payment with PayPal</h2>
+        <p class="text-sm text-gray-600 text-center">
+            You will be redirected to PayPal to securely finalize your purchase of $<span id="paypalAmountDisplay"></span>.
+        </p>
+        <div id="paypal-button-container" class="mt-4">
+            <p class="text-gray-500">Loading PayPal buttons...</p>
+        </div>
+        <button type="button" id="backToUserDetailsFromPaypal" class="mt-2 text-green-600 hover:underline">
+          Back to User Details
+        </button>
+      </div>
+
+      <div id="paymentResult" data-step-id="paymentResult" class="hidden text-center p-6">
+        <h2 id="paymentResultTitle" class="text-3xl font-extrabold mb-4"></h2>
+        <p id="paymentResultMessage" class="text-lg text-gray-700 mb-6"></p>
+        <button id="closeModalAfterPayment" class="mt-6 w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-lg">
+          Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js"></script>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAUCLvbDp2j1GIS_wwJt4HH5fCLQ67rLeHKG3cRQX8G6z-DfANkcNfKRhFaPHMngRU8eE2JhpojbfAcok&currency=USD"></script>
+
+  <script>
+    // Countdown Timer Setup (unchanged)
+    const deadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // 3 days from now
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = deadline - now;
+
+      if (diff <= 0) {
+        daysEl.textContent = '00';
+        hoursEl.textContent = '00';
+        minutesEl.textContent = '00';
+        secondsEl.textContent = '00';
+        clearInterval(timerInterval);
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      daysEl.textContent = days.toString().padStart(2, '0');
+      hoursEl.textContent = hours.toString().padStart(2, '0');
+      minutesEl.textContent = minutes.toString().padStart(2, '0');
+      secondsEl.textContent = seconds.toString().padStart(2, '0');
+    }
+
+    const timerInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Product Price & Total Calculation
+    const unitPrice = 25; // Price per unit
+    const totalPriceEl = document.getElementById('totalPrice');
+    const paypalAmountDisplay = document.getElementById('paypalAmountDisplay');
+
+    function updateTotalPrice() {
+      const currentTotal = quantity * unitPrice;
+      totalPriceEl.textContent = currentTotal;
+      paypalAmountDisplay.textContent = currentTotal; // Update PayPal display amount
+    }
+
+    // Modal logic
+    const orderBtn = document.getElementById('orderBtn');
+    const orderModal = document.getElementById('orderModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const closeModalAfterPaymentBtn = document.getElementById('closeModalAfterPayment');
+    
+    // Steps elements
+    const allSteps = document.querySelectorAll('#orderSummary, #userDetailsForm, #paypalPaymentSection, #paymentResult');
+    
+    // Buttons
+    const confirmOrderBtn = document.getElementById('confirmOrder');
+    const backToSummaryBtn = document.getElementById('backToSummary');
+    const backToUserDetailsFromPaypalBtn = document.getElementById('backToUserDetailsFromPaypal');
+
+    const quantityEl = document.getElementById('quantity');
+    const increaseQtyBtn = document.getElementById('increaseQty');
+    const decreaseQtyBtn = document.getElementById('decreaseQty');
+
+    const paymentResultTitle = document.getElementById('paymentResultTitle');
+    const paymentResultMessage = document.getElementById('paymentResultMessage');
+
+    let quantity = 1;
+    let phoneNumberInput = null;
+    let userDetails = {}; // Object to store user details temporarily
+
+    // Function to manage modal steps visibility
+    function showStep(stepIdToShow) {
+        allSteps.forEach(step => {
+            if (step.id === stepIdToShow) {
+                step.classList.remove('hidden'); // Show this step
+            } else {
+                step.classList.add('hidden'); // Hide other steps
+            }
+        });
+        // If showing the PayPal section, render the button (or re-render if needed)
+        if (stepIdToShow === 'paypalPaymentSection') {
+            // Give a small delay to ensure the div is fully visible before rendering
+            setTimeout(() => {
+                renderPayPalButton();
+            }, 100); // 100ms delay, adjust if needed
+        }
+    }
+
+    function openModal() {
+      orderModal.classList.remove('hidden'); // Show the modal overlay
+      showStep('orderSummary'); // Show the first step
+      updateTotalPrice();
+    }
+
+    function closeModal() {
+      orderModal.classList.add('hidden'); // Hide the modal overlay itself
+      quantity = 1;
+      quantityEl.textContent = quantity;
+      userDetailsForm.reset();
+      userDetails = {}; // Clear stored user details
+      if (phoneNumberInput) {
+          phoneNumberInput.destroy(); // Clean up intlTelInput instance
+          phoneNumberInput = null;
+      }
+      // Reset the PayPal button container for the next open
+      document.getElementById('paypal-button-container').innerHTML = '<p class="text-gray-500">Loading PayPal buttons...</p>';
+    }
+
+    // Function to render PayPal Standard Checkout Button
+    function renderPayPalButton() {
+        const paypalButtonContainer = document.getElementById('paypal-button-container');
+        // Clear previous buttons if they exist or loading message
+        paypalButtonContainer.innerHTML = ''; 
+
+        // Ensure paypal object is available and the container exists
+        if (typeof paypal !== 'undefined' && typeof paypal.Buttons === 'function' && paypalButtonContainer) {
+            console.log("PayPal SDK and Buttons object are loaded. Attempting to render buttons.");
+            paypal.Buttons({
+                style: {
+                    layout: 'vertical', // 'vertical' or 'horizontal'
+                    color: 'gold', // This will make the main PayPal button gold/yellow.
+                    shape: 'rect', // 'rect' or 'pill'
+                    label: 'paypal', // 'paypal', 'checkout', 'pay', 'buynow'
+                },
+                createOrder: function(data, actions) {
+                    // This function is called when the user clicks the PayPal button.
+                    // You pass the total amount from your site to PayPal here.
+                    const totalAmount = (quantity * unitPrice).toFixed(2); // Ensure 2 decimal places
+                    console.log(`Creating PayPal order for: $${totalAmount}`);
+
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: totalAmount, // This is the total price from your site
+                                currency_code: 'USD' // Change if your PayPal account is in a different currency
+                            },
+                            // Optionally, include item details. This helps PayPal's reconciliation.
+                            items: [{
+                                name: "AirFlow Fan & Humidifier",
+                                quantity: quantity,
+                                unit_amount: {
+                                    value: unitPrice.toFixed(2),
+                                    currency_code: 'USD'
+                                }
+                            }]
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    // This function is called when the user successfully approves the payment on PayPal.
+                    // You should CAPTURE the order on your backend here.
+                    console.log('PayPal payment approved on client side. Capturing order...');
+                    return actions.order.capture().then(function(orderData) {
+                        // THIS IS WHERE YOU SEND ALL THE ORDER DATA TO YOUR BACKEND
+                        const finalOrderToProcess = {
+                            quantity: quantity,
+                            totalAmount: quantity * unitPrice,
+                            userDetails: userDetails, // User details collected earlier
+                            paypalOrderId: orderData.id, // PayPal's unique order ID
+                            paypalStatus: orderData.status, // Payment status from PayPal (e.g., 'COMPLETED')
+                            // You might send more details from orderData if needed
+                        };
+
+                        console.log('PayPal Order Capture Details:', orderData);
+                        console.log('Final Order Data to Send to Backend:', finalOrderToProcess);
+
+                        // --- START: Simulate sending data to backend ---
+                        // In a real scenario, you'd use fetch() to send this to your server
+                        // Example:
+                        // fetch('/api/process-paypal-order', {
+                        //     method: 'POST',
+                        //     headers: { 'Content-Type': 'application/json' },
+                        //     body: JSON.stringify(finalOrderToProcess)
+                        // })
+                        // .then(response => response.json())
+                        // .then(backendResponse => {
+                        //     if (backendResponse.success) {
+                        //         showPaymentResult('Payment Successful!', 'Thank you for your purchase. Your order ID is ' + backendResponse.orderId);
+                        //     } else {
+                        //         showPaymentResult('Payment Failed', 'There was an issue processing your order. Please try again or contact support.');
+                        //     }
+                        // })
+                        // .catch(error => {
+                        //     console.error('Error sending order to backend:', error);
+                        //     showPaymentResult('Payment Failed', 'An error occurred while finalizing your order. Please contact support.');
+                        // });
+                        // --- END: Simulate sending data to backend ---
+
+                        // For now, just show a success message on the frontend
+                        paymentResultTitle.textContent = 'Payment Successful!';
+                        paymentResultMessage.innerHTML = `Thank you for your purchase! Your PayPal Order ID is: <strong>${orderData.id}</strong>. <br>We've received your details and will process your order soon.`;
+                        showStep('paymentResult');
+                    });
+                },
+                onCancel: function(data) {
+                    console.log('PayPal payment cancelled by user:', data);
+                    paymentResultTitle.textContent = 'Payment Cancelled';
+                    paymentResultMessage.textContent = 'You have cancelled the payment. Please try again if you wish to complete the purchase.';
+                    showStep('paymentResult');
+                },
+                onError: function(err) {
+                    // This function is called if there's an error during the PayPal process
+                    console.error('PayPal Error:', err);
+                    paymentResultTitle.textContent = 'Payment Failed';
+                    paymentResultMessage.textContent = 'There was an error with your PayPal payment. Please try again.';
+                    showStep('paymentResult');
+                }
+            }).render('#paypal-button-container'); // Render the button into the div
+        } else {
+            console.error("PayPal SDK (paypal.Buttons) not fully loaded or container missing. Displaying error message.");
+            paypalButtonContainer.innerHTML = '<p class="text-red-500">Could not load PayPal buttons. Please ensure your Client ID is correct and try refreshing the page.</p>';
+        }
+    }
+
+    function showPaymentResult(title, message) {
+        paymentResultTitle.textContent = title;
+        paymentResultMessage.innerHTML = message;
+        showStep('paymentResult');
+    }
+
+    // Event Listeners
+    orderBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    closeModalAfterPaymentBtn.addEventListener('click', closeModal); 
+
+    increaseQtyBtn.addEventListener('click', () => {
+      quantity++;
+      quantityEl.textContent = quantity;
+      updateTotalPrice();
+    });
+
+    decreaseQtyBtn.addEventListener('click', () => {
+      if (quantity > 1) {
+        quantity--;
+        quantityEl.textContent = quantity;
+        updateTotalPrice();
+      }
+    });
+
+    confirmOrderBtn.addEventListener('click', () => {
+      showStep('userDetailsForm');
+      if (!phoneNumberInput) {
+          const input = document.querySelector("#phone");
+          phoneNumberInput = window.intlTelInput(input, {
+              initialCountry: "auto", 
+              geoIpLookup: function(callback) {
+                // استخدم مفتاح IPinfo الخاص بك
+                fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") // <<-- لا تنسَ استبدال هذا بـ "YOUR_IPINFO_TOKEN" بمفتاح API الحقيقي الخاص بك!
+                      .then(response => response.json())
+                      .then(data => callback(data.country))
+                      .catch(() => callback("us"));
+              },
+              utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js",
+          });
+      }
+    });
+
+    userDetailsForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (phoneNumberInput && !phoneNumberInput.isValidNumber()) {
+        alert("Please enter a valid phone number, including the correct country code.");
+        return;
+      }
+
+      if (!userDetailsForm.checkValidity()) {
+        userDetailsForm.reportValidity();
+        return;
+      }
+      
+      // Store user details BEFORE proceeding to PayPal
+      userDetails = {
+            firstName: userDetailsForm.firstName.value.trim(),
+            lastName: userDetailsForm.lastName.value.trim(),
+            phone: phoneNumberInput ? phoneNumberInput.getNumber() : userDetailsForm.phone.value.trim(), 
+            instagram: userDetailsForm.instagram.value.trim(),
+            district: userDetailsForm.district.value.trim(),
+            postalCode: userDetailsForm.postalCode.value.trim()
+        };
+
+        console.log("User Details Collected:", userDetails);
+        
+        // Proceed to PayPal payment section
+        showStep('paypalPaymentSection');
+    });
+
+    // Back Buttons
+    backToSummaryBtn.addEventListener('click', () => {
+      showStep('orderSummary');
+    });
+
+    backToUserDetailsFromPaypalBtn.addEventListener('click', () => {
+        showStep('userDetailsForm');
+        // Re-initialize intlTelInput if it was destroyed and needed again (optional, depending on flow)
+        if (!phoneNumberInput) { 
+            const input = document.querySelector("#phone");
+            phoneNumberInput = window.intlTelInput(input, {
+                initialCountry: "auto", 
+                geoIpLookup: function(callback) {
+                    fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") // <<-- لا تنسَ استبدال هذا بمفتاح API الحقيقي الخاص بك!
+                        .then(response => response.json())
+                        .then(data => callback(data.country))
+                        .catch(() => callback("us"));
+                },
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js",
+            });
+        }
+    });
+  </script>
+</body>
+</html>
