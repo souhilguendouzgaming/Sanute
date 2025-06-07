@@ -8,8 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
-  
+   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <meta name="description" content="Get the 2-in-1 AirFlow Fan & Humidifier for cool, fresh air. Enjoy 50% off for a limited time!" />
 
   <style>
     body {
@@ -92,23 +94,23 @@
     <div class="p-10 flex flex-col justify-center space-y-6 fade-in-up" style="animation-delay: 0.2s">
       <h1 class="text-5xl font-extrabold leading-tight text-green-600">Cool Your Air, Breathe Fresh</h1>
       <p class="text-lg text-gray-700">Introducing the 2-in-1 AirFlow Fan & Humidifier. Perfect for summer days and dry nights.</p>
-      
+       
       <div class="flex items-center space-x-4">
         <span class="text-xl line-through text-gray-400">$50</span>
         <span class="text-4xl font-bold text-green-600">$25</span>
         <span class="discount-badge bg-green-100 text-green-600 px-3 py-1 rounded-full font-semibold select-none">50% OFF</span>
       </div>
-      
+       
       <button id="orderBtn" class="pulse-button bg-green-600 text-white text-xl rounded-xl py-3 px-10 font-semibold hover:bg-green-700 transition duration-300 shadow-lg">
         Order Now
       </button>
-      
+       
       <p class="text-sm text-gray-500">Limited time offer. While stocks last!</p>
 
       <div class="flex space-x-4 mt-6">
         <div class="text-center">
           <span id="days" class="block text-3xl font-bold text-green-700">00</span>
-          <span class="text-sm text-gray-500">Hours</span>
+          <span class="text-sm text-gray-500">Days</span>
         </div>
         <div class="text-center">
           <span id="hours" class="block text-3xl font-bold text-green-700">00</span>
@@ -135,6 +137,25 @@
     </div>
   </div>
 
+<section class="w-full max-w-5xl mt-12 p-8 bg-white rounded-3xl shadow-2xl">
+    <h2 class="text-4xl font-extrabold text-center text-green-700 mb-8">Why Choose AirFlow?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center p-4">
+            <div class="text-green-600 text-5xl mb-4">🌬️</div> <h3 class="font-bold text-xl mb-2">Dual Functionality</h3>
+            <p class="text-gray-700">Experience cooling relief and optimal humidity levels with one device.</p>
+        </div>
+        <div class="text-center p-4">
+            <div class="text-green-600 text-5xl mb-4">🔇</div> <h3 class="font-bold text-xl mb-2">Whisper-Quiet Operation</h3>
+            <p class="text-gray-700">Enjoy a peaceful environment with our ultra-silent fan and humidifier.</p>
+        </div>
+        <div class="text-center p-4">
+            <div class="text-green-600 text-5xl mb-4">💧</div> <h3 class="font-bold text-xl mb-2">Easy to Refill & Clean</h3>
+            <p class="text-gray-700">Designed for convenience, making maintenance a breeze.</p>
+        </div>
+    </div>
+</section>
+
+
   <div id="orderModal" class="fixed inset-0 hidden modal-bg z-50 overflow-auto p-6 flex items-center justify-center">
     <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6 modal">
       
@@ -152,16 +173,29 @@
             <p class="text-xl font-bold text-green-600 mt-2">Total: $<span id="totalPrice">25</span></p>
           </div>
         </div>
-        <button id="confirmOrder" class="mt-6 w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-lg">
-          Confirm Order
+        <button id="proceedToPayment" class="mt-6 w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-lg">
+          Proceed to Payment
         </button>
         <button id="closeModal" class="mt-3 w-full text-center text-green-600 hover:underline">
           Cancel
         </button>
       </div>
 
+      <div id="paypalPaymentSection" data-step-id="paypalPaymentSection" class="hidden flex flex-col space-y-4">
+        <h2 class="text-2xl font-extrabold mb-4 text-green-700 text-center">Complete Payment with PayPal</h2>
+        <p class="text-sm text-gray-600 text-center">
+            You will be redirected to PayPal to securely finalize your purchase of $<span id="paypalAmountDisplay"></span>.
+        </p>
+        <div id="paypal-button-container" class="mt-4">
+            <p class="text-gray-500">Loading PayPal buttons...</p>
+        </div>
+        <button type="button" id="backToSummaryFromPaypal" class="mt-2 text-green-600 hover:underline">
+          Back to Order Summary
+        </button>
+      </div>
+
       <form id="userDetailsForm" data-step-id="userDetailsForm" class="hidden flex flex-col space-y-4" novalidate>
-        <h2 class="text-2xl font-extrabold mb-4 text-green-700">Enter Your Details</h2>
+        <h2 class="text-2xl font-extrabold mb-4 text-green-700">Enter Your Shipping Details</h2>
 
         <div>
           <label for="firstName" class="block font-semibold mb-1">First Name</label>
@@ -179,12 +213,12 @@
         </div>
 
         <div>
-          <label for="instagram" class="block font-semibold mb-1">Instagram Handle</label>
+          <label for="instagram" class="block font-semibold mb-1">Instagram Handle (Optional)</label>
           <input type="text" id="instagram" name="instagram" placeholder="@yourhandle" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
-          <label for="district" class="block font-semibold mb-1">District / حي السكن</label>
+          <label for="district" class="block font-semibold mb-1">District / Neighborhood</label>
           <input type="text" id="district" name="district" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
@@ -194,25 +228,12 @@
         </div>
 
         <button type="submit" class="mt-4 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-lg">
-          Proceed to Payment
+          Submit Details
         </button>
-        <button type="button" id="backToSummary" class="mt-2 text-green-600 hover:underline">
-          Back to Order Summary
+        <button type="button" id="backToPaypalFromDetails" class="mt-2 text-green-600 hover:underline">
+          Back to Payment
         </button>
       </form>
-
-      <div id="paypalPaymentSection" data-step-id="paypalPaymentSection" class="hidden flex flex-col space-y-4">
-        <h2 class="text-2xl font-extrabold mb-4 text-green-700 text-center">Complete Payment with PayPal</h2>
-        <p class="text-sm text-gray-600 text-center">
-            You will be redirected to PayPal to securely finalize your purchase of $<span id="paypalAmountDisplay"></span>.
-        </p>
-        <div id="paypal-button-container" class="mt-4">
-            <p class="text-gray-500">Loading PayPal buttons...</p>
-        </div>
-        <button type="button" id="backToUserDetailsFromPaypal" class="mt-2 text-green-600 hover:underline">
-          Back to User Details
-        </button>
-      </div>
 
       <div id="paymentResult" data-step-id="paymentResult" class="hidden text-center p-6">
         <h2 id="paymentResultTitle" class="text-3xl font-extrabold mb-4"></h2>
@@ -228,7 +249,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js"></script>
 
-  <script src="https://www.paypal.com/sdk/js?client-id=BAAUCLvbDp2j1GIS_wwJt4HH5fCLQ67rLeHKG3cRQX8G6z-DfANkcNfKRhFaPHMngRU8eE2JhpojbfAcok&currency=USD"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=AXkikIbaMvm12m3cFLW01-e28J7EEcMW7FGrTHXrK0xyz3FyRsywKiGYcJkxSLRPNHOpmc9gQfKwty8J&currency=USD"></script>
 
   <script>
     // Countdown Timer Setup (unchanged)
@@ -286,14 +307,15 @@
     const allSteps = document.querySelectorAll('#orderSummary, #userDetailsForm, #paypalPaymentSection, #paymentResult');
     
     // Buttons
-    const confirmOrderBtn = document.getElementById('confirmOrder');
-    const backToSummaryBtn = document.getElementById('backToSummary');
-    const backToUserDetailsFromPaypalBtn = document.getElementById('backToUserDetailsFromPaypal');
+    const proceedToPaymentBtn = document.getElementById('proceedToPayment');
+    const backToSummaryFromPaypalBtn = document.getElementById('backToSummaryFromPaypal');
+    const backToPaypalFromDetailsBtn = document.getElementById('backToPaypalFromDetails');
 
     const quantityEl = document.getElementById('quantity');
     const increaseQtyBtn = document.getElementById('increaseQty');
     const decreaseQtyBtn = document.getElementById('decreaseQty');
 
+    const userDetailsForm = document.getElementById('userDetailsForm'); // Get the form element
     const paymentResultTitle = document.getElementById('paymentResultTitle');
     const paymentResultMessage = document.getElementById('paymentResultMessage');
 
@@ -316,6 +338,21 @@
             setTimeout(() => {
                 renderPayPalButton();
             }, 100); // 100ms delay, adjust if needed
+        } else if (stepIdToShow === 'userDetailsForm') {
+            // Initialize intlTelInput when showing user details form
+            if (!phoneNumberInput) {
+                const input = document.querySelector("#phone");
+                phoneNumberInput = window.intlTelInput(input, {
+                    initialCountry: "auto", 
+                    geoIpLookup: function(callback) {
+                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") // <-- REMEMBER TO REPLACE THIS WITH YOUR REAL IPINFO API TOKEN!
+                            .then(response => response.json())
+                            .then(data => callback(data.country))
+                            .catch(() => callback("us")); // Default to US if lookup fails
+                    },
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js",
+                });
+            }
         }
     }
 
@@ -356,8 +393,6 @@
                     label: 'paypal', // 'paypal', 'checkout', 'pay', 'buynow'
                 },
                 createOrder: function(data, actions) {
-                    // This function is called when the user clicks the PayPal button.
-                    // You pass the total amount from your site to PayPal here.
                     const totalAmount = (quantity * unitPrice).toFixed(2); // Ensure 2 decimal places
                     console.log(`Creating PayPal order for: $${totalAmount}`);
 
@@ -367,7 +402,6 @@
                                 value: totalAmount, // This is the total price from your site
                                 currency_code: 'USD' // Change if your PayPal account is in a different currency
                             },
-                            // Optionally, include item details. This helps PayPal's reconciliation.
                             items: [{
                                 name: "AirFlow Fan & Humidifier",
                                 quantity: quantity,
@@ -380,49 +414,12 @@
                     });
                 },
                 onApprove: function(data, actions) {
-                    // This function is called when the user successfully approves the payment on PayPal.
-                    // You should CAPTURE the order on your backend here.
                     console.log('PayPal payment approved on client side. Capturing order...');
                     return actions.order.capture().then(function(orderData) {
-                        // THIS IS WHERE YOU SEND ALL THE ORDER DATA TO YOUR BACKEND
-                        const finalOrderToProcess = {
-                            quantity: quantity,
-                            totalAmount: quantity * unitPrice,
-                            userDetails: userDetails, // User details collected earlier
-                            paypalOrderId: orderData.id, // PayPal's unique order ID
-                            paypalStatus: orderData.status, // Payment status from PayPal (e.g., 'COMPLETED')
-                            // You might send more details from orderData if needed
-                        };
-
-                        console.log('PayPal Order Capture Details:', orderData);
-                        console.log('Final Order Data to Send to Backend:', finalOrderToProcess);
-
-                        // --- START: Simulate sending data to backend ---
-                        // In a real scenario, you'd use fetch() to send this to your server
-                        // Example:
-                        // fetch('/api/process-paypal-order', {
-                        //     method: 'POST',
-                        //     headers: { 'Content-Type': 'application/json' },
-                        //     body: JSON.stringify(finalOrderToProcess)
-                        // })
-                        // .then(response => response.json())
-                        // .then(backendResponse => {
-                        //     if (backendResponse.success) {
-                        //         showPaymentResult('Payment Successful!', 'Thank you for your purchase. Your order ID is ' + backendResponse.orderId);
-                        //     } else {
-                        //         showPaymentResult('Payment Failed', 'There was an issue processing your order. Please try again or contact support.');
-                        //     }
-                        // })
-                        // .catch(error => {
-                        //     console.error('Error sending order to backend:', error);
-                        //     showPaymentResult('Payment Failed', 'An error occurred while finalizing your order. Please contact support.');
-                        // });
-                        // --- END: Simulate sending data to backend ---
-
-                        // For now, just show a success message on the frontend
-                        paymentResultTitle.textContent = 'Payment Successful!';
-                        paymentResultMessage.innerHTML = `Thank you for your purchase! Your PayPal Order ID is: <strong>${orderData.id}</strong>. <br>We've received your details and will process your order soon.`;
-                        showStep('paymentResult');
+                        // Display success message and then proceed to user details form
+                        paymentResultTitle.textContent = 'Payment Approved!';
+                        paymentResultMessage.innerHTML = `Your PayPal Order ID: <strong>${orderData.id}</strong>. Please provide your shipping details to complete the order.`;
+                        showStep('userDetailsForm'); // Move to user details form
                     });
                 },
                 onCancel: function(data) {
@@ -432,7 +429,6 @@
                     showStep('paymentResult');
                 },
                 onError: function(err) {
-                    // This function is called if there's an error during the PayPal process
                     console.error('PayPal Error:', err);
                     paymentResultTitle.textContent = 'Payment Failed';
                     paymentResultMessage.textContent = 'There was an error with your PayPal payment. Please try again.';
@@ -470,22 +466,8 @@
       }
     });
 
-    confirmOrderBtn.addEventListener('click', () => {
-      showStep('userDetailsForm');
-      if (!phoneNumberInput) {
-          const input = document.querySelector("#phone");
-          phoneNumberInput = window.intlTelInput(input, {
-              initialCountry: "auto", 
-              geoIpLookup: function(callback) {
-                // استخدم مفتاح IPinfo الخاص بك
-                fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") // <<-- لا تنسَ استبدال هذا بـ "YOUR_IPINFO_TOKEN" بمفتاح API الحقيقي الخاص بك!
-                      .then(response => response.json())
-                      .then(data => callback(data.country))
-                      .catch(() => callback("us"));
-              },
-              utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js",
-          });
-      }
+    proceedToPaymentBtn.addEventListener('click', () => {
+      showStep('paypalPaymentSection'); // Go directly to PayPal payment
     });
 
     userDetailsForm.addEventListener('submit', (e) => {
@@ -501,7 +483,7 @@
         return;
       }
       
-      // Store user details BEFORE proceeding to PayPal
+      // Store user details AFTER payment approval
       userDetails = {
             firstName: userDetailsForm.firstName.value.trim(),
             lastName: userDetailsForm.lastName.value.trim(),
@@ -513,31 +495,50 @@
 
         console.log("User Details Collected:", userDetails);
         
-        // Proceed to PayPal payment section
-        showStep('paypalPaymentSection');
+        // At this point, payment is approved, user details collected.
+        // You would typically send both payment confirmation and user details to your backend here.
+        // --- START: Simulate sending data to backend ---
+        // In a real scenario, you'd use fetch() to send this to your server
+        // Example:
+        // fetch('/api/finalize-order', {
+        //      method: 'POST',
+        //      headers: { 'Content-Type': 'application/json' },
+        //      body: JSON.stringify({
+        //          quantity: quantity,
+        //          totalAmount: quantity * unitPrice,
+        //          userDetails: userDetails, 
+        //          paypalOrderId: paypalOrderIdFromApprovedPayment // You would store this from onApprove
+        //      })
+        // })
+        // .then(response => response.json())
+        // .then(backendResponse => {
+        //      if (backendResponse.success) {
+        //          showPaymentResult('Order Confirmed!', 'Thank you for your purchase. Your order ID is ' + backendResponse.orderId);
+        //      } else {
+        //          showPaymentResult('Order Failed', 'There was an issue processing your order. Please contact support.');
+        //      }
+        // })
+        // .catch(error => {
+        //      console.error('Error sending order to backend:', error);
+        //      showPaymentResult('Order Failed', 'An error occurred while finalizing your order. Please contact support.');
+        // });
+        // --- END: Simulate sending data to backend ---
+
+        // For now, just show a final success message on the frontend
+        paymentResultTitle.textContent = 'Order Confirmed!';
+        paymentResultMessage.innerHTML = `Thank you for your purchase! We've received your details and will process your order soon.`;
+        showStep('paymentResult');
     });
 
     // Back Buttons
-    backToSummaryBtn.addEventListener('click', () => {
+    backToSummaryFromPaypalBtn.addEventListener('click', () => {
       showStep('orderSummary');
     });
 
-    backToUserDetailsFromPaypalBtn.addEventListener('click', () => {
-        showStep('userDetailsForm');
-        // Re-initialize intlTelInput if it was destroyed and needed again (optional, depending on flow)
-        if (!phoneNumberInput) { 
-            const input = document.querySelector("#phone");
-            phoneNumberInput = window.intlTelInput(input, {
-                initialCountry: "auto", 
-                geoIpLookup: function(callback) {
-                    fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") // <<-- لا تنسَ استبدال هذا بمفتاح API الحقيقي الخاص بك!
-                        .then(response => response.json())
-                        .then(data => callback(data.country))
-                        .catch(() => callback("us"));
-                },
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js",
-            });
-        }
+    backToPaypalFromDetailsBtn.addEventListener('click', () => {
+        // If they click back from user details to PayPal, just show the PayPal step
+        // No need to re-render buttons as they should still be there from previous step
+        showStep('paypalPaymentSection');
     });
   </script>
 </body>
