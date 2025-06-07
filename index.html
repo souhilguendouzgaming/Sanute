@@ -74,13 +74,15 @@
     .iti__arrow {
         border-top-color: #374151; /* Darken arrow for visibility */
     }
-    /* Style for PayPal buttons container to ensure it's visible */
-    #paypal-container-V6P6N7UGNXQCG { /* Updated ID for Hosted Button */
-        min-height: 50px; 
-        display: flex;
-        justify-content: center; 
-        align-items: center;
-        width: 100%;
+    /* Style for PayPal buttons container to ensure it's visible and not distorted */
+    #paypal-container-V6P6N7UGNXQCG { 
+        min-height: 50px; /* Standard height for PayPal buttons */
+        width: 100%; /* Ensure it takes full width of its parent */
+        max-width: 300px; /* Limit max width for better appearance if parent is too wide */
+        margin: 0 auto; /* Center the button if max-width is applied */
+        /* display: flex; /* These might interfere with PayPal's internal rendering, let PayPal manage it */
+        /* justify-content: center; */
+        /* align-items: center; */
     }
   </style>
 </head>
