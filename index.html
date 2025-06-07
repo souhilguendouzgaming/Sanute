@@ -75,7 +75,7 @@
         border-top-color: #374151; /* Darken arrow for visibility */
     }
     /* Style for PayPal buttons container to ensure it's visible */
-    #paypal-button-container {
+    #paypal-container-V6P6N7UGNXQCG { /* Updated ID for Hosted Button */
         min-height: 50px; 
         display: flex;
         justify-content: center; 
@@ -179,11 +179,9 @@
       <div id="paypalPaymentSection" data-step-id="paypalPaymentSection" class="hidden flex flex-col space-y-4">
         <h2 class="text-2xl font-extrabold mb-4 text-green-700 text-center">Complete Payment with PayPal</h2>
         <p class="text-sm text-gray-600 text-center">
-            You will be redirected to PayPal to securely finalize your purchase of $<span id="paypalAmountDisplay"></span>.
+            You will be redirected to PayPal to securely finalize your purchase.
         </p>
-        <div id="paypal-button-container" class="mt-4">
-            <p class="text-gray-500">Loading PayPal buttons...</p>
-        </div>
+        <div id="paypal-container-V6P6N7UGNXQCG" class="mt-4"></div>
         <button type="button" id="backToSummaryFromPaypal" class="mt-2 text-green-600 hover:underline">
           Back to Order Summary
         </button>
@@ -244,7 +242,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js"></script>
 
-  <script src="https://www.paypal.com/sdk/js?client-id=AbAyBn5esXQpU17WjD6C0i4c5IzPZdmRr648kHI5hzoBbiAz7fvM6zFYa9Qlt9Hq34PTTZVQfvbnh_CF&currency=USD"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID_IF_NEEDED_FOR_OTHER_BUTTONS&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
 
   <script>
     // Countdown Timer Setup
@@ -281,14 +279,10 @@
     const timerInterval = setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Product Price
-    const unitPrice = 25; // Price per unit
+    // Product Price (Fixed for single quantity)
+    const unitPrice = 25; 
     const unitPriceDisplayEl = document.getElementById('unitPriceDisplay');
-    const paypalAmountDisplay = document.getElementById('paypalAmountDisplay');
-
-    // Display the unit price, no total calculation needed
-    unitPriceDisplayEl.textContent = unitPrice; 
-    paypalAmountDisplay.textContent = unitPrice;
+    unitPriceDisplayEl.textContent = unitPrice;
 
     // Modal logic
     const orderBtn = document.getElementById('orderBtn');
@@ -304,7 +298,7 @@
     const backToSummaryFromPaypalBtn = document.getElementById('backToSummaryFromPaypal');
     const backToPaypalFromDetailsBtn = document.getElementById('backToPaypalFromDetails');
 
-    const userDetailsForm = document.getElementById('userDetailsForm'); // Get the form element
+    const userDetailsForm = document.getElementById('userDetailsForm'); 
     const paymentResultTitle = document.getElementById('paymentResultTitle');
     const paymentResultMessage = document.getElementById('paymentResultMessage');
 
@@ -325,14 +319,46 @@
                 step.classList.add('hidden'); // Hide other steps
             }
         });
-        // If showing the PayPal section, render the button (or re-render if needed)
+        
         if (stepIdToShow === 'paypalPaymentSection') {
-            // Give a small delay to ensure the div is fully visible before rendering
-            setTimeout(() => {
-                renderPayPalButton();
-            }, 100); // 100ms delay, adjust if needed
+            // Render the Hosted Button when this section is shown
+            // The hosted button will handle the payment flow
+            paypal.HostedButtons({
+                hostedButtonId: "V6P6N7UGNXQCG",
+                // You can add onApprove, onCancel, onError callbacks here
+                // However, for Hosted Buttons, these callbacks might be more limited
+                // or require additional setup with your PayPal account/webhook.
+                // A common pattern is that PayPal redirects back to a success/cancel URL
+                // you configure in the Hosted Button settings.
+            }).render("#paypal-container-V6P6N7UGNXQCG")
+            .then(() => {
+                // This simulates a successful payment after the hosted button redirects back.
+                // In a real scenario, this would happen via a redirect to a success URL 
+                // and a backend process confirming the payment.
+                // For demonstration, let's add a placeholder to simulate payment approval
+                // and proceed to user details *after* they interact with the PayPal Hosted Button.
+                // You would need to set up a way to confirm payment approval.
+                // For a live site, you'd likely redirect from PayPal to a page on your site
+                // that then calls this showStep('userDetailsForm') after backend verification.
+                
+                // *** IMPORTANT FOR LIVE USAGE ***
+                // Hosted Buttons redirect to PayPal, and then redirect back to a URL you configure.
+                // The client-side JS won't directly get onApprove here.
+                // This current flow *assumes* the user completes payment and you then want to
+                // show the user details form. You'll need to handle the success redirect from PayPal
+                // to trigger the next step.
+                
+                // For now, let's keep the userDetailsForm accessible after a "simulated" payment
+                // (which would happen on PayPal's side). 
+                // The below is for illustrative purposes only, showing where you'd transition.
+                console.log("PayPal Hosted Button rendered. Awaiting user interaction and redirection.");
+                // After the user completes payment on PayPal, they will be redirected.
+                // You'd typically land on a "success" page, and from there, trigger the
+                // collection of shipping details.
+                // For this single-page example, we'll need a different trigger if the Hosted Button
+                // doesn't call a JS function directly on success.
+            });
         } else if (stepIdToShow === 'userDetailsForm') {
-            // Initialize intlTelInput when showing user details form
             if (!phoneNumberInput) {
                 const input = document.querySelector("#phone");
                 phoneNumberInput = window.intlTelInput(input, {
@@ -350,94 +376,21 @@
     }
 
     function openModal() {
-      orderModal.classList.remove('hidden'); // Show the modal overlay
-      showStep('orderSummary'); // Show the first step (order summary)
+      orderModal.classList.remove('hidden'); 
+      showStep('orderSummary'); 
     }
 
     function closeModal() {
-      orderModal.classList.add('hidden'); // Hide the modal overlay itself
-      userDetailsForm.reset(); // Reset form fields
-      userDetails = {}; // Clear stored user details
-      paypalOrderIdFromApprovedPayment = null; // Clear PayPal order ID
+      orderModal.classList.add('hidden'); 
+      userDetailsForm.reset(); 
+      userDetails = {}; 
+      paypalOrderIdFromApprovedPayment = null; 
       if (phoneNumberInput) {
-          phoneNumberInput.destroy(); // Clean up intlTelInput instance
+          phoneNumberInput.destroy(); 
           phoneNumberInput = null;
       }
-      // Reset the PayPal button container for the next open
-      document.getElementById('paypal-button-container').innerHTML = '<p class="text-gray-500">Loading PayPal buttons...</p>';
-    }
-
-    // Function to render PayPal Standard Checkout Button
-    function renderPayPalButton() {
-        const paypalButtonContainer = document.getElementById('paypal-button-container');
-        // Clear previous buttons if they exist or loading message
-        paypalButtonContainer.innerHTML = ''; 
-
-        // Ensure paypal object is available and the container exists
-        if (typeof paypal !== 'undefined' && typeof paypal.Buttons === 'function' && paypalButtonContainer) {
-            console.log("PayPal SDK and Buttons object are loaded. Attempting to render buttons.");
-            paypal.Buttons({
-                style: {
-                    layout: 'vertical', 
-                    color: 'gold', 
-                    shape: 'rect', 
-                    label: 'paypal', 
-                },
-                createOrder: function(data, actions) {
-                    const amountToPay = unitPrice.toFixed(2); // Fixed amount since quantity is 1
-                    console.log(`Creating PayPal order for: $${amountToPay}`);
-
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: amountToPay, 
-                                currency_code: 'USD' 
-                            },
-                            items: [{
-                                name: "AirFlow Fan & Humidifier",
-                                quantity: 1, // Fixed quantity
-                                unit_amount: {
-                                    value: unitPrice.toFixed(2),
-                                    currency_code: 'USD'
-                                }
-                            }]
-                        }]
-                    });
-                },
-                onApprove: function(data, actions) {
-                    console.log('PayPal payment approved on client side. Capturing order...');
-                    return actions.order.capture().then(function(orderData) {
-                        paypalOrderIdFromApprovedPayment = orderData.id; // Store PayPal order ID
-
-                        // Display success message and then proceed to user details form
-                        paymentResultTitle.textContent = 'Payment Approved!';
-                        paymentResultMessage.innerHTML = `Your PayPal Order ID: <strong>${orderData.id}</strong>. Please provide your shipping details to complete the order.`;
-                        showStep('userDetailsForm'); // Move to user details form
-                    });
-                },
-                onCancel: function(data) {
-                    console.log('PayPal payment cancelled by user:', data);
-                    paymentResultTitle.textContent = 'Payment Cancelled';
-                    paymentResultMessage.textContent = 'You have cancelled the payment. Please try again if you wish to complete the purchase.';
-                    showStep('paymentResult');
-                },
-                onError: function(err) {
-                    console.error('PayPal Error:', err);
-                    paymentResultTitle.textContent = 'Payment Failed';
-                    paymentResultMessage.textContent = 'There was an error with your PayPal payment. Please try again.';
-                    showStep('paymentResult');
-                }
-            }).render('#paypal-button-container'); // Render the button into the div
-        } else {
-            console.error("PayPal SDK (paypal.Buttons) not fully loaded or container missing. Displaying error message.");
-            paypalButtonContainer.innerHTML = '<p class="text-red-500">Could not load PayPal buttons. Please ensure your Client ID is correct and try refreshing the page.</p>';
-        }
-    }
-
-    function showPaymentResult(title, message) {
-        paymentResultTitle.textContent = title;
-        paymentResultMessage.innerHTML = message;
-        showStep('paymentResult');
+       // Ensure the PayPal Hosted Button container is ready for re-render
+      document.getElementById('paypal-container-V6P6N7UGNXQCG').innerHTML = ''; 
     }
 
     // Event Listeners
@@ -445,13 +398,35 @@
     closeModalBtn.addEventListener('click', closeModal);
     closeModalAfterPaymentBtn.addEventListener('click', closeModal); 
 
-    // No quantity increase/decrease buttons needed as quantity is fixed at 1
-    // increaseQtyBtn.addEventListener('click', () => { ... });
-    // decreaseQtyBtn.addEventListener('click', () => { ... });
-
     proceedToPaymentBtn.addEventListener('click', () => {
       showStep('paypalPaymentSection'); // Go directly to PayPal payment
     });
+
+    // For Hosted Buttons, the "onApprove" logic is managed by PayPal's redirect.
+    // The flow here assumes that after the Hosted Button completes, you'd then
+    // programmatically show the userDetailsForm. Since there's no direct JS callback
+    // for Hosted Buttons on success (they typically redirect), we'll add a simple
+    // placeholder to proceed manually for this example.
+    // In a real application, you'd configure a return URL in your Hosted Button settings
+    // and process the payment confirmation on your server side, then redirect to a page
+    // that presents the user details form.
+
+    // This is a placeholder for how you might proceed *after* PayPal redirects back
+    // or confirms payment for a Hosted Button. For this example, we'll assume a successful
+    // payment allows you to proceed to the next step.
+    // You would typically link this to a success redirect from PayPal.
+    // For manual testing/demonstration, you could add a temporary button to jump to this step
+    // after you've interacted with the PayPal button (e.g., if you complete the payment).
+    
+    // To simulate moving to user details AFTER a hypothetical PayPal Hosted Button success:
+    // You might add a temporary button on the paypalPaymentSection just for testing:
+    // <button id="simulatePayPalSuccess" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded">Simulate PayPal Success & Continue</button>
+    // Then in JS:
+    // document.getElementById('simulatePayPalSuccess').addEventListener('click', () => {
+    //     paypalOrderIdFromApprovedPayment = "HOSTED_BUTTON_SIMULATED_ID_" + Date.now(); // Dummy ID
+    //     showStep('userDetailsForm');
+    // });
+
 
     userDetailsForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -466,7 +441,7 @@
         return;
       }
       
-      // Store user details AFTER payment approval
+      // Store user details 
       userDetails = {
             firstName: userDetailsForm.firstName.value.trim(),
             lastName: userDetailsForm.lastName.value.trim(),
@@ -478,19 +453,18 @@
 
         console.log("User Details Collected:", userDetails);
         
-        // At this point, payment is approved, user details collected.
-        // This is where you would typically send both payment confirmation and user details to your backend.
+        // At this point, the PayPal Hosted Button would have handled the payment.
+        // You would typically send these user details to your backend,
+        // likely along with a confirmation from PayPal's webhook or redirect.
         // --- START: Simulate sending data to backend ---
-        // In a real scenario, you'd use fetch() to send this to your server
-        // Example:
         // fetch('/api/finalize-order', {
         //      method: 'POST',
         //      headers: { 'Content-Type': 'application/json' },
         //      body: JSON.stringify({
         //          quantity: quantity,
-        //          totalAmount: unitPrice, // Since quantity is fixed at 1
+        //          totalAmount: unitPrice, 
         //          userDetails: userDetails, 
-        //          paypalOrderId: paypalOrderIdFromApprovedPayment 
+        //          paypalOrderId: paypalOrderIdFromApprovedPayment // This would come from your PayPal confirmation logic
         //      })
         // })
         // .then(response => response.json())
@@ -519,9 +493,15 @@
     });
 
     backToPaypalFromDetailsBtn.addEventListener('click', () => {
-        // If they click back from user details to PayPal, just show the PayPal step
         showStep('paypalPaymentSection');
+        // Re-render the hosted button if user goes back to this step
+        paypal.HostedButtons({
+            hostedButtonId: "V6P6N7UGNXQCG",
+        }).render("#paypal-container-V6P6N7UGNXQCG");
     });
+
+    // Render the hosted button when the modal is opened and the paypalPaymentSection is shown
+    // This is handled by showStep function now
   </script>
 </body>
 </html>
