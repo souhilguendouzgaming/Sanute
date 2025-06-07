@@ -165,12 +165,7 @@
           <img src="heros.png" alt="Fan Humidifier" class="w-24 h-24 rounded-lg object-cover shadow-md" />
           <div class="flex-grow">
             <h3 class="font-semibold text-lg">AirFlow Fan & Humidifier</h3>
-            <div class="mt-2 flex items-center space-x-2">
-              <button id="decreaseQty" class="bg-green-600 text-white rounded px-3 py-1 font-bold hover:bg-green-700 transition">−</button>
-              <span id="quantity" class="text-xl font-semibold">1</span>
-              <button id="increaseQty" class="bg-green-600 text-white rounded px-3 py-1 font-bold hover:bg-green-700 transition">+</button>
-            </div>
-            <p class="text-xl font-bold text-green-600 mt-2">Total: $<span id="totalPrice">25</span></p>
+            <p class="text-xl font-bold text-green-600 mt-2">Price: $<span id="unitPriceDisplay">25</span></p>
           </div>
         </div>
         <button id="proceedToPayment" class="mt-6 w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-lg">
@@ -252,7 +247,7 @@
   <script src="https://www.paypal.com/sdk/js?client-id=AbAyBn5esXQpU17WjD6C0i4c5IzPZdmRr648kHI5hzoBbiAz7fvM6zFYa9Qlt9Hq34PTTZVQfvbnh_CF&currency=USD"></script>
 
   <script>
-    // Countdown Timer Setup (unchanged)
+    // Countdown Timer Setup
     const deadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // 3 days from now
     const daysEl = document.getElementById('days');
     const hoursEl = document.getElementById('hours');
@@ -286,16 +281,14 @@
     const timerInterval = setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Product Price & Total Calculation
+    // Product Price
     const unitPrice = 25; // Price per unit
-    const totalPriceEl = document.getElementById('totalPrice');
+    const unitPriceDisplayEl = document.getElementById('unitPriceDisplay');
     const paypalAmountDisplay = document.getElementById('paypalAmountDisplay');
 
-    function updateTotalPrice() {
-      const currentTotal = quantity * unitPrice;
-      totalPriceEl.textContent = currentTotal;
-      paypalAmountDisplay.textContent = currentTotal; // Update PayPal display amount
-    }
+    // Display the unit price, no total calculation needed
+    unitPriceDisplayEl.textContent = unitPrice; 
+    paypalAmountDisplay.textContent = unitPrice;
 
     // Modal logic
     const orderBtn = document.getElementById('orderBtn');
@@ -311,17 +304,17 @@
     const backToSummaryFromPaypalBtn = document.getElementById('backToSummaryFromPaypal');
     const backToPaypalFromDetailsBtn = document.getElementById('backToPaypalFromDetails');
 
-    const quantityEl = document.getElementById('quantity');
-    const increaseQtyBtn = document.getElementById('increaseQty');
-    const decreaseQtyBtn = document.getElementById('decreaseQty');
-
     const userDetailsForm = document.getElementById('userDetailsForm'); // Get the form element
     const paymentResultTitle = document.getElementById('paymentResultTitle');
     const paymentResultMessage = document.getElementById('paymentResultMessage');
 
-    let quantity = 1;
+    // Quantity is fixed at 1
+    const quantity = 1; 
     let phoneNumberInput = null;
     let userDetails = {}; // Object to store user details temporarily
+
+    // Store PayPal Order ID after approval, before collecting user details
+    let paypalOrderIdFromApprovedPayment = null; 
 
     // Function to manage modal steps visibility
     function showStep(stepIdToShow) {
@@ -345,9 +338,7 @@
                 phoneNumberInput = window.intlTelInput(input, {
                     initialCountry: "auto", 
                     geoIpLookup: function(callback) {
-                        // REMEMBER TO REPLACE THIS WITH YOUR REAL IPINFO API TOKEN!
-                        // For example: `token=YOUR_IPINFO_TOKEN`
-                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") 
+                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") // <-- IMPORTANT: REPLACE THIS WITH YOUR REAL IPINFO API TOKEN!
                             .then(response => response.json())
                             .then(data => callback(data.country))
                             .catch(() => callback("us")); // Default to US if lookup fails
@@ -360,16 +351,14 @@
 
     function openModal() {
       orderModal.classList.remove('hidden'); // Show the modal overlay
-      showStep('orderSummary'); // Show the first step
-      updateTotalPrice();
+      showStep('orderSummary'); // Show the first step (order summary)
     }
 
     function closeModal() {
       orderModal.classList.add('hidden'); // Hide the modal overlay itself
-      quantity = 1;
-      quantityEl.textContent = quantity;
-      userDetailsForm.reset();
+      userDetailsForm.reset(); // Reset form fields
       userDetails = {}; // Clear stored user details
+      paypalOrderIdFromApprovedPayment = null; // Clear PayPal order ID
       if (phoneNumberInput) {
           phoneNumberInput.destroy(); // Clean up intlTelInput instance
           phoneNumberInput = null;
@@ -389,24 +378,24 @@
             console.log("PayPal SDK and Buttons object are loaded. Attempting to render buttons.");
             paypal.Buttons({
                 style: {
-                    layout: 'vertical', // 'vertical' or 'horizontal'
-                    color: 'gold', // This will make the main PayPal button gold/yellow.
-                    shape: 'rect', // 'rect' or 'pill'
-                    label: 'paypal', // 'paypal', 'checkout', 'pay', 'buynow'
+                    layout: 'vertical', 
+                    color: 'gold', 
+                    shape: 'rect', 
+                    label: 'paypal', 
                 },
                 createOrder: function(data, actions) {
-                    const totalAmount = (quantity * unitPrice).toFixed(2); // Ensure 2 decimal places
-                    console.log(`Creating PayPal order for: $${totalAmount}`);
+                    const amountToPay = unitPrice.toFixed(2); // Fixed amount since quantity is 1
+                    console.log(`Creating PayPal order for: $${amountToPay}`);
 
                     return actions.order.create({
                         purchase_units: [{
                             amount: {
-                                value: totalAmount, // This is the total price from your site
-                                currency_code: 'USD' // Change if your PayPal account is in a different currency
+                                value: amountToPay, 
+                                currency_code: 'USD' 
                             },
                             items: [{
                                 name: "AirFlow Fan & Humidifier",
-                                quantity: quantity,
+                                quantity: 1, // Fixed quantity
                                 unit_amount: {
                                     value: unitPrice.toFixed(2),
                                     currency_code: 'USD'
@@ -418,6 +407,8 @@
                 onApprove: function(data, actions) {
                     console.log('PayPal payment approved on client side. Capturing order...');
                     return actions.order.capture().then(function(orderData) {
+                        paypalOrderIdFromApprovedPayment = orderData.id; // Store PayPal order ID
+
                         // Display success message and then proceed to user details form
                         paymentResultTitle.textContent = 'Payment Approved!';
                         paymentResultMessage.innerHTML = `Your PayPal Order ID: <strong>${orderData.id}</strong>. Please provide your shipping details to complete the order.`;
@@ -454,19 +445,9 @@
     closeModalBtn.addEventListener('click', closeModal);
     closeModalAfterPaymentBtn.addEventListener('click', closeModal); 
 
-    increaseQtyBtn.addEventListener('click', () => {
-      quantity++;
-      quantityEl.textContent = quantity;
-      updateTotalPrice();
-    });
-
-    decreaseQtyBtn.addEventListener('click', () => {
-      if (quantity > 1) {
-        quantity--;
-        quantityEl.textContent = quantity;
-        updateTotalPrice();
-      }
-    });
+    // No quantity increase/decrease buttons needed as quantity is fixed at 1
+    // increaseQtyBtn.addEventListener('click', () => { ... });
+    // decreaseQtyBtn.addEventListener('click', () => { ... });
 
     proceedToPaymentBtn.addEventListener('click', () => {
       showStep('paypalPaymentSection'); // Go directly to PayPal payment
@@ -498,7 +479,7 @@
         console.log("User Details Collected:", userDetails);
         
         // At this point, payment is approved, user details collected.
-        // You would typically send both payment confirmation and user details to your backend here.
+        // This is where you would typically send both payment confirmation and user details to your backend.
         // --- START: Simulate sending data to backend ---
         // In a real scenario, you'd use fetch() to send this to your server
         // Example:
@@ -507,9 +488,9 @@
         //      headers: { 'Content-Type': 'application/json' },
         //      body: JSON.stringify({
         //          quantity: quantity,
-        //          totalAmount: quantity * unitPrice,
+        //          totalAmount: unitPrice, // Since quantity is fixed at 1
         //          userDetails: userDetails, 
-        //          paypalOrderId: paypalOrderIdFromApprovedPayment // You would store this from onApprove
+        //          paypalOrderId: paypalOrderIdFromApprovedPayment 
         //      })
         // })
         // .then(response => response.json())
@@ -517,7 +498,7 @@
         //      if (backendResponse.success) {
         //          showPaymentResult('Order Confirmed!', 'Thank you for your purchase. Your order ID is ' + backendResponse.orderId);
         //      } else {
-        //          showPaymentResult('Order Failed', 'There was an issue processing your order. Please contact support.');
+        //          showPaymentResult('Order Failed', 'There was an issue processing your order. Please try again or contact support.');
         //      }
         // })
         // .catch(error => {
@@ -539,7 +520,6 @@
 
     backToPaypalFromDetailsBtn.addEventListener('click', () => {
         // If they click back from user details to PayPal, just show the PayPal step
-        // No need to re-render buttons as they should still be there from previous step
         showStep('paypalPaymentSection');
     });
   </script>
