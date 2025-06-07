@@ -242,7 +242,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js"></script>
 
-  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID_IF_NEEDED_FOR_OTHER_BUTTONS&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAUCLvbDp2j1GIS_wwJt4HH5fCLQ67rLeHKG3cRQX8G6z-DfANkcNfKRhFaPHMngRU8eE2JhpojbfAcok&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
 
   <script>
     // Countdown Timer Setup
@@ -307,9 +307,6 @@
     let phoneNumberInput = null;
     let userDetails = {}; // Object to store user details temporarily
 
-    // Store PayPal Order ID after approval, before collecting user details
-    let paypalOrderIdFromApprovedPayment = null; 
-
     // Function to manage modal steps visibility
     function showStep(stepIdToShow) {
         allSteps.forEach(step => {
@@ -326,13 +323,8 @@
             if (paypalContainer) {
                 paypalContainer.innerHTML = ''; // Clear previous button instance
                 // Render the Hosted Button when this section is shown
-                // The hosted button will handle the payment flow
                 paypal.HostedButtons({
                     hostedButtonId: "V6P6N7UGNXQCG",
-                    // For Hosted Buttons, onApprove, onCancel, onError are generally
-                    // handled by PayPal's redirect to URLs you configure for the button.
-                    // This client-side JS won't directly get these callbacks.
-                    // You'll need to set up the return_url and cancel_url in your PayPal Hosted Button settings.
                 }).render("#paypal-container-V6P6N7UGNXQCG")
                 .then(() => {
                     console.log("PayPal Hosted Button rendered.");
@@ -350,7 +342,8 @@
                 phoneNumberInput = window.intlTelInput(input, {
                     initialCountry: "auto", 
                     geoIpLookup: function(callback) {
-                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") // <-- IMPORTANT: REPLACE THIS WITH YOUR REAL IPINFO API TOKEN!
+                        // REMEMBER TO REPLACE THIS WITH YOUR REAL IPINFO API TOKEN!
+                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") 
                             .then(response => response.json())
                             .then(data => callback(data.country))
                             .catch(() => callback("us")); // Default to US if lookup fails
@@ -370,7 +363,6 @@
       orderModal.classList.add('hidden'); 
       userDetailsForm.reset(); 
       userDetails = {}; 
-      paypalOrderIdFromApprovedPayment = null; 
       if (phoneNumberInput) {
           phoneNumberInput.destroy(); 
           phoneNumberInput = null;
@@ -416,17 +408,11 @@
 
         console.log("User Details Collected:", userDetails);
         
-        // At this point, the PayPal Hosted Button would have handled the payment.
-        // You would typically send these user details to your backend,
-        // likely along with a confirmation from PayPal's webhook or redirect.
-        // For a full production setup with Hosted Buttons:
-        // 1. Configure a 'Return URL' in your PayPal Hosted Button settings.
-        // 2. PayPal redirects the user to this URL after successful payment.
-        // 3. Your server-side code on that 'Return URL' should verify the payment
-        //    (e.g., using PayPal's IPN or Webhooks to avoid fraud).
-        // 4. Once payment is verified, you can then display the user details form
-        //    (or redirect to a page that has it) and proceed with order fulfillment.
-        // This client-side code *cannot* directly verify a Hosted Button payment.
+        // This is where you would typically send these user details to your backend,
+        // likely along with confirmation that the PayPal Hosted Button payment was successful.
+        // Remember: PayPal Hosted Buttons handle the payment redirect on PayPal's side.
+        // You need a server-side process (e.g., PayPal IPN or Webhooks) to confirm payment
+        // and link it to these user details for fulfillment.
 
         // For this demo, we'll just show success here after form submission.
         paymentResultTitle.textContent = 'Order Confirmed!';
