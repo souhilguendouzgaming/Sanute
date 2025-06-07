@@ -249,7 +249,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js"></script>
 
-  <script src="https://www.paypal.com/sdk/js?client-id=AXkikIbaMvm12m3cFLW01-e28J7EEcMW7FGrTHXrK0xyz3FyRsywKiGYcJkxSLRPNHOpmc9gQfKwty8J&currency=USD"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=AbAyBn5esXQpU17WjD6C0i4c5IzPZdmRr648kHI5hzoBbiAz7fvM6zFYa9Qlt9Hq34PTTZVQfvbnh_CF&currency=USD"></script>
 
   <script>
     // Countdown Timer Setup (unchanged)
@@ -345,7 +345,9 @@
                 phoneNumberInput = window.intlTelInput(input, {
                     initialCountry: "auto", 
                     geoIpLookup: function(callback) {
-                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") // <-- REMEMBER TO REPLACE THIS WITH YOUR REAL IPINFO API TOKEN!
+                        // REMEMBER TO REPLACE THIS WITH YOUR REAL IPINFO API TOKEN!
+                        // For example: `token=YOUR_IPINFO_TOKEN`
+                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") 
                             .then(response => response.json())
                             .then(data => callback(data.country))
                             .catch(() => callback("us")); // Default to US if lookup fails
