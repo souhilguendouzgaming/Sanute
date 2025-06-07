@@ -321,43 +321,29 @@
         });
         
         if (stepIdToShow === 'paypalPaymentSection') {
-            // Render the Hosted Button when this section is shown
-            // The hosted button will handle the payment flow
-            paypal.HostedButtons({
-                hostedButtonId: "V6P6N7UGNXQCG",
-                // You can add onApprove, onCancel, onError callbacks here
-                // However, for Hosted Buttons, these callbacks might be more limited
-                // or require additional setup with your PayPal account/webhook.
-                // A common pattern is that PayPal redirects back to a success/cancel URL
-                // you configure in the Hosted Button settings.
-            }).render("#paypal-container-V6P6N7UGNXQCG")
-            .then(() => {
-                // This simulates a successful payment after the hosted button redirects back.
-                // In a real scenario, this would happen via a redirect to a success URL 
-                // and a backend process confirming the payment.
-                // For demonstration, let's add a placeholder to simulate payment approval
-                // and proceed to user details *after* they interact with the PayPal Hosted Button.
-                // You would need to set up a way to confirm payment approval.
-                // For a live site, you'd likely redirect from PayPal to a page on your site
-                // that then calls this showStep('userDetailsForm') after backend verification.
-                
-                // *** IMPORTANT FOR LIVE USAGE ***
-                // Hosted Buttons redirect to PayPal, and then redirect back to a URL you configure.
-                // The client-side JS won't directly get onApprove here.
-                // This current flow *assumes* the user completes payment and you then want to
-                // show the user details form. You'll need to handle the success redirect from PayPal
-                // to trigger the next step.
-                
-                // For now, let's keep the userDetailsForm accessible after a "simulated" payment
-                // (which would happen on PayPal's side). 
-                // The below is for illustrative purposes only, showing where you'd transition.
-                console.log("PayPal Hosted Button rendered. Awaiting user interaction and redirection.");
-                // After the user completes payment on PayPal, they will be redirected.
-                // You'd typically land on a "success" page, and from there, trigger the
-                // collection of shipping details.
-                // For this single-page example, we'll need a different trigger if the Hosted Button
-                // doesn't call a JS function directly on success.
-            });
+            // Clear the container before re-rendering the button
+            const paypalContainer = document.getElementById('paypal-container-V6P6N7UGNXQCG');
+            if (paypalContainer) {
+                paypalContainer.innerHTML = ''; // Clear previous button instance
+                // Render the Hosted Button when this section is shown
+                // The hosted button will handle the payment flow
+                paypal.HostedButtons({
+                    hostedButtonId: "V6P6N7UGNXQCG",
+                    // For Hosted Buttons, onApprove, onCancel, onError are generally
+                    // handled by PayPal's redirect to URLs you configure for the button.
+                    // This client-side JS won't directly get these callbacks.
+                    // You'll need to set up the return_url and cancel_url in your PayPal Hosted Button settings.
+                }).render("#paypal-container-V6P6N7UGNXQCG")
+                .then(() => {
+                    console.log("PayPal Hosted Button rendered.");
+                })
+                .catch(error => {
+                    console.error("Error rendering PayPal Hosted Button:", error);
+                    if (paypalContainer) {
+                        paypalContainer.innerHTML = '<p class="text-red-500 text-center">Failed to load PayPal button. Please try again or refresh the page.</p>';
+                    }
+                });
+            }
         } else if (stepIdToShow === 'userDetailsForm') {
             if (!phoneNumberInput) {
                 const input = document.querySelector("#phone");
@@ -389,8 +375,11 @@
           phoneNumberInput.destroy(); 
           phoneNumberInput = null;
       }
-       // Ensure the PayPal Hosted Button container is ready for re-render
-      document.getElementById('paypal-container-V6P6N7UGNXQCG').innerHTML = ''; 
+       // Clear the PayPal Hosted Button container when closing the modal
+      const paypalContainer = document.getElementById('paypal-container-V6P6N7UGNXQCG');
+      if (paypalContainer) {
+          paypalContainer.innerHTML = ''; 
+      }
     }
 
     // Event Listeners
@@ -401,32 +390,6 @@
     proceedToPaymentBtn.addEventListener('click', () => {
       showStep('paypalPaymentSection'); // Go directly to PayPal payment
     });
-
-    // For Hosted Buttons, the "onApprove" logic is managed by PayPal's redirect.
-    // The flow here assumes that after the Hosted Button completes, you'd then
-    // programmatically show the userDetailsForm. Since there's no direct JS callback
-    // for Hosted Buttons on success (they typically redirect), we'll add a simple
-    // placeholder to proceed manually for this example.
-    // In a real application, you'd configure a return URL in your Hosted Button settings
-    // and process the payment confirmation on your server side, then redirect to a page
-    // that presents the user details form.
-
-    // This is a placeholder for how you might proceed *after* PayPal redirects back
-    // or confirms payment for a Hosted Button. For this example, we'll assume a successful
-    // payment allows you to proceed to the next step.
-    // You would typically link this to a success redirect from PayPal.
-    // For manual testing/demonstration, you could add a temporary button to jump to this step
-    // after you've interacted with the PayPal button (e.g., if you complete the payment).
-    
-    // To simulate moving to user details AFTER a hypothetical PayPal Hosted Button success:
-    // You might add a temporary button on the paypalPaymentSection just for testing:
-    // <button id="simulatePayPalSuccess" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded">Simulate PayPal Success & Continue</button>
-    // Then in JS:
-    // document.getElementById('simulatePayPalSuccess').addEventListener('click', () => {
-    //     paypalOrderIdFromApprovedPayment = "HOSTED_BUTTON_SIMULATED_ID_" + Date.now(); // Dummy ID
-    //     showStep('userDetailsForm');
-    // });
-
 
     userDetailsForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -456,32 +419,16 @@
         // At this point, the PayPal Hosted Button would have handled the payment.
         // You would typically send these user details to your backend,
         // likely along with a confirmation from PayPal's webhook or redirect.
-        // --- START: Simulate sending data to backend ---
-        // fetch('/api/finalize-order', {
-        //      method: 'POST',
-        //      headers: { 'Content-Type': 'application/json' },
-        //      body: JSON.stringify({
-        //          quantity: quantity,
-        //          totalAmount: unitPrice, 
-        //          userDetails: userDetails, 
-        //          paypalOrderId: paypalOrderIdFromApprovedPayment // This would come from your PayPal confirmation logic
-        //      })
-        // })
-        // .then(response => response.json())
-        // .then(backendResponse => {
-        //      if (backendResponse.success) {
-        //          showPaymentResult('Order Confirmed!', 'Thank you for your purchase. Your order ID is ' + backendResponse.orderId);
-        //      } else {
-        //          showPaymentResult('Order Failed', 'There was an issue processing your order. Please try again or contact support.');
-        //      }
-        // })
-        // .catch(error => {
-        //      console.error('Error sending order to backend:', error);
-        //      showPaymentResult('Order Failed', 'An error occurred while finalizing your order. Please contact support.');
-        // });
-        // --- END: Simulate sending data to backend ---
+        // For a full production setup with Hosted Buttons:
+        // 1. Configure a 'Return URL' in your PayPal Hosted Button settings.
+        // 2. PayPal redirects the user to this URL after successful payment.
+        // 3. Your server-side code on that 'Return URL' should verify the payment
+        //    (e.g., using PayPal's IPN or Webhooks to avoid fraud).
+        // 4. Once payment is verified, you can then display the user details form
+        //    (or redirect to a page that has it) and proceed with order fulfillment.
+        // This client-side code *cannot* directly verify a Hosted Button payment.
 
-        // For now, just show a final success message on the frontend
+        // For this demo, we'll just show success here after form submission.
         paymentResultTitle.textContent = 'Order Confirmed!';
         paymentResultMessage.innerHTML = `Thank you for your purchase! We've received your details and will process your order soon.`;
         showStep('paymentResult');
@@ -494,14 +441,8 @@
 
     backToPaypalFromDetailsBtn.addEventListener('click', () => {
         showStep('paypalPaymentSection');
-        // Re-render the hosted button if user goes back to this step
-        paypal.HostedButtons({
-            hostedButtonId: "V6P6N7UGNXQCG",
-        }).render("#paypal-container-V6P6N7UGNXQCG");
+        // The showStep function now handles re-rendering the button for this step
     });
-
-    // Render the hosted button when the modal is opened and the paypalPaymentSection is shown
-    // This is handled by showStep function now
   </script>
 </body>
 </html>
