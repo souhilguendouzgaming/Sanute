@@ -17,41 +17,30 @@
     /* Basic body styling */
     body {
       font-family: 'Inter', sans-serif;
-      /* Background animation properties - Pale Rainbow Gradient */
-      background: linear-gradient(135deg, #FFB6C1, #FFDAB9, #FFFFE0, #D1FFD1, #BFEFFF, #D8BFD8, #E6E6FA); /* Initial pale rainbow gradient */
-      background-size: 400% 400%; /* Larger background size to allow smooth panning */
-      animation: paleRainbowBackground 30s ease infinite; /* Apply the pale rainbow animation */
+      /* Define a long, continuous gradient of pale rainbow colors */
+      background: linear-gradient(135deg, 
+          #FFB6C1, /* Pale Pink */
+          #FFDAB9, /* Peach */
+          #FFFFE0, /* Light Yellow */
+          #D1FFD1, /* Pale Green */
+          #BFEFFF, /* Light Blue */
+          #D8BFD8, /* Thistle (Pale Purple) */
+          #E6E6FA, /* Lavender */
+          #FFB6C1  /* Loop back to Pale Pink */
+      );
+      /* Make the background size much larger than the viewport to allow for smooth panning */
+      background-size: 400% 400%; 
+      /* Apply the animation to move the background position */
+      animation: smoothPaleRainbow 30s ease infinite alternate; /* 'alternate' makes it go back and forth smoothly */
     }
 
-    /* Keyframes for pale rainbow background animation */
-    @keyframes paleRainbowBackground {
+    /* Keyframes for smooth pale rainbow background animation */
+    @keyframes smoothPaleRainbow {
       0% {
-        background-position: 0% 50%;
-        background-image: linear-gradient(135deg, #FFB6C1, #FFDAB9, #FFFFE0); /* Light Pink to Peach to Light Yellow */
-      }
-      16% {
-        background-position: 25% 50%;
-        background-image: linear-gradient(135deg, #FFDAB9, #FFFFE0, #D1FFD1); /* Peach to Light Yellow to Light Green */
-      }
-      33% {
-        background-position: 50% 50%;
-        background-image: linear-gradient(135deg, #FFFFE0, #D1FFD1, #BFEFFF); /* Light Yellow to Light Green to Light Blue */
-      }
-      50% {
-        background-position: 75% 50%;
-        background-image: linear-gradient(135deg, #D1FFD1, #BFEFFF, #D8BFD8); /* Light Green to Light Blue to Thistle */
-      }
-      66% {
-        background-position: 100% 50%;
-        background-image: linear-gradient(135deg, #BFEFFF, #D8BFD8, #E6E6FA); /* Light Blue to Thistle to Lavender */
-      }
-      83% {
-        background-position: 75% 50%; /* Go back a bit for a smoother loop */
-        background-image: linear-gradient(135deg, #D8BFD8, #E6E6FA, #FFB6C1); /* Thistle to Lavender to Light Pink (wrap around) */
+        background-position: 0% 50%; /* Start from left side of the gradient */
       }
       100% {
-        background-position: 0% 50%; /* Back to start */
-        background-image: linear-gradient(135deg, #FFB6C1, #FFDAB9, #FFFFE0); /* Back to Light Pink to Peach to Light Yellow */
+        background-position: 100% 50%; /* Move to right side of the gradient */
       }
     }
 
@@ -471,7 +460,7 @@
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
 
       daysEl.textContent = days.toString().padStart(2, '0');
