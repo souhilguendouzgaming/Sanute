@@ -17,26 +17,43 @@
     /* Basic body styling */
     body {
       font-family: 'Inter', sans-serif;
-      /* Background animation properties */
-      background: linear-gradient(135deg, #FFB6C1 0%, #ADD8E6 50%, #FFDAB9 100%); /* Initial pale gradient */
+      /* Background animation properties - Rainbow Gradient */
+      background: linear-gradient(135deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #9400D3); /* Initial rainbow gradient */
       background-size: 400% 400%; /* Larger background size to allow smooth panning */
-      animation: colorChange 15s ease infinite; /* Apply the animation */
+      animation: rainbowBackground 30s ease infinite; /* Apply the rainbow animation */
     }
 
-    /* Keyframes for background color change animation */
-    @keyframes colorChange {
-      0%, 100% {
-        background-position: 0% 50%; /* Start and end with first color combo */
+    /* Keyframes for rainbow background animation */
+    @keyframes rainbowBackground {
+      0% {
+        background-position: 0% 50%;
+        background-image: linear-gradient(135deg, #FF0000, #FF7F00, #FFFF00); /* Red to Yellow */
+      }
+      16% {
+        background-position: 25% 50%;
+        background-image: linear-gradient(135deg, #FF7F00, #FFFF00, #00FF00); /* Orange to Green */
+      }
+      33% {
+        background-position: 50% 50%;
+        background-image: linear-gradient(135deg, #FFFF00, #00FF00, #0000FF); /* Yellow to Blue */
       }
       50% {
-        background-position: 100% 50%; /* Transition to second color combo */
+        background-position: 75% 50%;
+        background-image: linear-gradient(135deg, #00FF00, #0000FF, #4B0082); /* Green to Indigo */
+      }
+      66% {
+        background-position: 100% 50%;
+        background-image: linear-gradient(135deg, #0000FF, #4B0082, #9400D3); /* Blue to Violet */
+      }
+      83% {
+        background-position: 75% 50%;
+        background-image: linear-gradient(135deg, #4B0082, #9400D3, #FF0000); /* Indigo to Red (wrap around) */
+      }
+      100% {
+        background-position: 0% 50%;
+        background-image: linear-gradient(135deg, #FF0000, #FF7F00, #FFFF00); /* Back to Red to Yellow */
       }
     }
-
-    /* Pale colors for the gradient */
-    /* Red: #FFB6C1 (Light Pink) */
-    /* Blue: #ADD8E6 (Light Blue) */
-    /* Orange: #FFDAB9 (Peach Puff) */
 
 
     /* Fade-in animation for initial content load */
