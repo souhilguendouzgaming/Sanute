@@ -17,41 +17,41 @@
     /* Basic body styling */
     body {
       font-family: 'Inter', sans-serif;
-      /* Background animation properties - Rainbow Gradient */
-      background: linear-gradient(135deg, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #9400D3); /* Initial rainbow gradient */
+      /* Background animation properties - Pale Rainbow Gradient */
+      background: linear-gradient(135deg, #FFB6C1, #FFDAB9, #FFFFE0, #D1FFD1, #BFEFFF, #D8BFD8, #E6E6FA); /* Initial pale rainbow gradient */
       background-size: 400% 400%; /* Larger background size to allow smooth panning */
-      animation: rainbowBackground 30s ease infinite; /* Apply the rainbow animation */
+      animation: paleRainbowBackground 30s ease infinite; /* Apply the pale rainbow animation */
     }
 
-    /* Keyframes for rainbow background animation */
-    @keyframes rainbowBackground {
+    /* Keyframes for pale rainbow background animation */
+    @keyframes paleRainbowBackground {
       0% {
         background-position: 0% 50%;
-        background-image: linear-gradient(135deg, #FF0000, #FF7F00, #FFFF00); /* Red to Yellow */
+        background-image: linear-gradient(135deg, #FFB6C1, #FFDAB9, #FFFFE0); /* Light Pink to Peach to Light Yellow */
       }
       16% {
         background-position: 25% 50%;
-        background-image: linear-gradient(135deg, #FF7F00, #FFFF00, #00FF00); /* Orange to Green */
+        background-image: linear-gradient(135deg, #FFDAB9, #FFFFE0, #D1FFD1); /* Peach to Light Yellow to Light Green */
       }
       33% {
         background-position: 50% 50%;
-        background-image: linear-gradient(135deg, #FFFF00, #00FF00, #0000FF); /* Yellow to Blue */
+        background-image: linear-gradient(135deg, #FFFFE0, #D1FFD1, #BFEFFF); /* Light Yellow to Light Green to Light Blue */
       }
       50% {
         background-position: 75% 50%;
-        background-image: linear-gradient(135deg, #00FF00, #0000FF, #4B0082); /* Green to Indigo */
+        background-image: linear-gradient(135deg, #D1FFD1, #BFEFFF, #D8BFD8); /* Light Green to Light Blue to Thistle */
       }
       66% {
         background-position: 100% 50%;
-        background-image: linear-gradient(135deg, #0000FF, #4B0082, #9400D3); /* Blue to Violet */
+        background-image: linear-gradient(135deg, #BFEFFF, #D8BFD8, #E6E6FA); /* Light Blue to Thistle to Lavender */
       }
       83% {
-        background-position: 75% 50%;
-        background-image: linear-gradient(135deg, #4B0082, #9400D3, #FF0000); /* Indigo to Red (wrap around) */
+        background-position: 75% 50%; /* Go back a bit for a smoother loop */
+        background-image: linear-gradient(135deg, #D8BFD8, #E6E6FA, #FFB6C1); /* Thistle to Lavender to Light Pink (wrap around) */
       }
       100% {
-        background-position: 0% 50%;
-        background-image: linear-gradient(135deg, #FF0000, #FF7F00, #FFFF00); /* Back to Red to Yellow */
+        background-position: 0% 50%; /* Back to start */
+        background-image: linear-gradient(135deg, #FFB6C1, #FFDAB9, #FFFFE0); /* Back to Light Pink to Peach to Light Yellow */
       }
     }
 
