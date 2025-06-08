@@ -108,9 +108,13 @@
     }
     /* Star rating styling */
     .star-rating .star {
-        color: #ffc107; /* Gold color for stars */
-        font-size: 1.25rem; /* Adjust size as needed */
-        margin-right: 2px;
+        color: #d1d5db; /* Light gray for unselected stars */
+        font-size: 1.5rem; /* Adjust size as needed */
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    .star-rating .star.filled {
+        color: #ffc107; /* Gold color for filled stars */
     }
   </style>
 </head>
@@ -245,7 +249,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a1.png" alt="Customer Avatar 1" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
             </div>
             <p class="text-gray-700 italic mb-4">"This fan and humidifier combo is a game-changer! My room feels so much fresher and cooler. Absolutely love it."</p>
             <p class="font-semibold text-green-700">- Ahmed M.</p>
@@ -254,7 +258,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a2.png" alt="Customer Avatar 2" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">☆</span>
             </div>
             <p class="text-gray-700 italic mb-4">"Quiet and efficient! I can sleep so much better now that the air isn't dry. Highly recommend AirFlow."</p>
             <p class="font-semibold text-green-700">- Fatima Z.</p>
@@ -263,7 +267,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a3.png" alt="Customer Avatar 3" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
             </div>
             <p class="text-gray-700 italic mb-4">"A must-have for summer! The design is sleek, and it works perfectly. Great value for money."</p>
             <p class="font-semibold text-green-700">- Omar K.</p>
@@ -272,7 +276,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a4.png" alt="Customer Avatar 4" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
             </div>
             <p class="text-gray-700 italic mb-4">"I was skeptical at first, but AirFlow exceeded my expectations. My allergies are better, and the air feels so clean."</p>
             <p class="font-semibold text-green-700">- Layla S.</p>
@@ -281,7 +285,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a5.png" alt="Customer Avatar 5" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">☆</span>
             </div>
             <p class="text-gray-700 italic mb-4">"This is exactly what I needed for my home office. Keeps the air comfortable all day. Five stars!"</p>
             <p class="font-semibold text-green-700">- Khalid H.</p>
@@ -290,11 +294,43 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a6.png" alt="Customer Avatar 6" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
             </div>
             <p class="text-gray-700 italic mb-4">"Compact, stylish, and effective. The AirFlow is a fantastic addition to my bedroom. Super happy with my purchase!"</p>
             <p class="font-semibold text-green-700">- Nora A.</p>
         </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-gray-200">
+        <h2 class="text-3xl font-extrabold text-center text-green-700 mb-6">Submit Your Review</h2>
+        <form id="reviewForm" class="max-w-xl mx-auto space-y-4 bg-gray-50 p-6 rounded-xl shadow-md">
+            <div>
+                <label for="reviewerName" class="block text-lg font-semibold mb-1 text-gray-800">Your Name</label>
+                <input type="text" id="reviewerName" name="reviewerName" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" placeholder="Enter your name" />
+            </div>
+            
+            <div>
+                <label for="reviewStars" class="block text-lg font-semibold mb-1 text-gray-800">Your Rating</label>
+                <div id="reviewStars" class="star-rating flex justify-center space-x-1">
+                    <span class="star-input" data-value="1">★</span>
+                    <span class="star-input" data-value="2">★</span>
+                    <span class="star-input" data-value="3">★</span>
+                    <span class="star-input" data-value="4">★</span>
+                    <span class="star-input" data-value="5">★</span>
+                </div>
+                <input type="hidden" id="selectedRating" name="rating" value="0" required />
+            </div>
+
+            <div>
+                <label for="reviewText" class="block text-lg font-semibold mb-1 text-gray-800">Your Review</label>
+                <textarea id="reviewText" name="reviewText" rows="4" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" placeholder="Share your experience..."></textarea>
+            </div>
+            
+            <button type="submit" class="w-full bg-green-600 text-white text-xl rounded-xl py-3 px-10 font-semibold hover:bg-green-700 transition duration-300 shadow-lg">
+                Submit Review
+            </button>
+            <div id="reviewMessage" class="mt-4 text-center text-lg hidden"></div>
+        </form>
     </div>
 </section>
 
@@ -561,6 +597,80 @@
     // Back button from User Details Form to PayPal Payment Section
     backToPaypalFromDetailsBtn.addEventListener('click', () => {
         showStep('paypalPaymentSection');
+    });
+
+    // --- Review Form Logic ---
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewStarsContainer = document.getElementById('reviewStars');
+    const selectedRatingInput = document.getElementById('selectedRating');
+    const reviewMessage = document.getElementById('reviewMessage');
+    let currentRating = 0;
+
+    // Function to update star display based on rating
+    function updateStars(rating) {
+        const stars = reviewStarsContainer.querySelectorAll('.star-input');
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('filled');
+            } else {
+                star.classList.remove('filled');
+            }
+        });
+    }
+
+    // Event listener for clicking on stars
+    reviewStarsContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('star-input')) {
+            currentRating = parseInt(e.target.dataset.value);
+            selectedRatingInput.value = currentRating;
+            updateStars(currentRating);
+        }
+    });
+
+    // Event listener for hovering over stars
+    reviewStarsContainer.addEventListener('mouseover', (e) => {
+        if (e.target.classList.contains('star-input')) {
+            const hoverRating = parseInt(e.target.dataset.value);
+            updateStars(hoverRating);
+        }
+    });
+
+    // Event listener for mouse leaving star container
+    reviewStarsContainer.addEventListener('mouseout', () => {
+        updateStars(currentRating); // Revert to selected rating
+    });
+
+    // Handle review form submission
+    reviewForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const reviewerName = document.getElementById('reviewerName').value.trim();
+        const reviewText = document.getElementById('reviewText').value.trim();
+        const rating = parseInt(selectedRatingInput.value);
+
+        if (!reviewerName || !reviewText || rating === 0) {
+            reviewMessage.textContent = 'Please fill in all fields and select a rating.';
+            reviewMessage.classList.remove('hidden', 'text-green-600');
+            reviewMessage.classList.add('text-red-600');
+            return;
+        }
+
+        // In a real application, you would send this data to a backend server.
+        // For now, we'll just log it and show a success message.
+        console.log({
+            name: reviewerName,
+            rating: rating,
+            review: reviewText
+        });
+
+        reviewMessage.textContent = 'Thank you for your review!';
+        reviewMessage.classList.remove('hidden', 'text-red-600');
+        reviewMessage.classList.add('text-green-600');
+        
+        reviewForm.reset(); // Clear the form
+        currentRating = 0; // Reset selected rating
+        selectedRatingInput.value = 0;
+        updateStars(0); // Reset stars display
     });
   </script>
 </body>
