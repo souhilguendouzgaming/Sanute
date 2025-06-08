@@ -17,26 +17,20 @@
     /* Basic body styling with Inter font */
     body {
       font-family: 'Inter', sans-serif;
-      /* Background for animation */
-      background: linear-gradient(270deg, #a8edea, #fed6e3, #c5f7d2, #a1e2f7); /* Initial gradient with more colors for smoother transition */
-      background-size: 800% 800%; /* Make the background much larger than the viewport */
-      animation: colorChange 15s ease infinite; /* Apply the animation */
+      /* Animation for background color change */
+      animation: background-color-change 15s infinite ease-in-out;
+      /* Ensure text is readable on changing backgrounds */
+      color: #333; /* Darker text for contrast */
     }
 
-    /* Keyframes for the continuous color change animation */
-    @keyframes colorChange {
-      0% {
-        background-position: 0% 50%; /* Start position */
-      }
-      50% {
-        background-position: 100% 50%; /* Middle position, shifts the gradient */
-      }
-      100% {
-        background-position: 0% 50%; /* End position, loops back */
-      }
+    /* Keyframes for continuous background color change */
+    @keyframes background-color-change {
+      0% { background-color: #ff6347; } /* Red (Tomato) */
+      33% { background-color: #4169e1; } /* Royal Blue */
+      66% { background-color: #ffa500; } /* Orange */
+      100% { background-color: #ff6347; } /* Back to Red to create a seamless loop */
     }
 
-    /* Existing animations */
     .fade-in-up {
       opacity: 0;
       transform: translateY(20px);
@@ -173,7 +167,6 @@
     </div>
 </section>
 
-
   <div id="orderModal" class="fixed inset-0 hidden modal-bg z-50 overflow-auto p-6 flex items-center justify-center">
     <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6 modal">
       
@@ -263,17 +256,20 @@
   <script src="https://www.paypal.com/sdk/js?client-id=BAAUCLvbDp2j1GIS_wwJt4HH5fCLQ67rLeHKG3cRQX8G6z-DfANkcNfKRhFaPHMngRU8eE2JhpojbfAcok&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
 
   <script>
-    // Countdown Timer Setup
-    const deadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); // 3 days from now
+    // --- Countdown Timer Setup ---
+    // Sets a deadline for the countdown, 3 days from the current time.
+    const deadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000); 
     const daysEl = document.getElementById('days');
     const hoursEl = document.getElementById('hours');
     const minutesEl = document.getElementById('minutes');
     const secondsEl = document.getElementById('seconds');
 
+    // Function to update the countdown display every second
     function updateCountdown() {
       const now = new Date();
-      const diff = deadline - now;
+      const diff = deadline - now; // Time difference in milliseconds
 
+      // If countdown finishes, set all to '00' and stop the timer
       if (diff <= 0) {
         daysEl.textContent = '00';
         hoursEl.textContent = '00';
@@ -283,138 +279,159 @@
         return;
       }
 
+      // Calculate days, hours, minutes, and seconds from the difference
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
       const seconds = Math.floor((diff / 1000) % 60);
 
+      // Update the HTML elements, padding single digits with a leading zero
       daysEl.textContent = days.toString().padStart(2, '0');
       hoursEl.textContent = hours.toString().padStart(2, '0');
       minutesEl.textContent = minutes.toString().padStart(2, '0');
       secondsEl.textContent = seconds.toString().padStart(2, '0');
     }
 
+    // Set interval to update countdown every 1 second (1000 ms)
     const timerInterval = setInterval(updateCountdown, 1000);
+    // Initial call to display the countdown immediately
     updateCountdown();
 
-    // Product Price (Fixed for single quantity)
+    // --- Product Price Setup ---
+    // Fixed unit price, as quantity is fixed at 1
     const unitPrice = 25; 
     const unitPriceDisplayEl = document.getElementById('unitPriceDisplay');
     unitPriceDisplayEl.textContent = unitPrice;
 
-    // Modal logic
-    const orderBtn = document.getElementById('orderBtn');
-    const orderModal = document.getElementById('orderModal');
-    const closeModalBtn = document.getElementById('closeModal');
-    const closeModalAfterPaymentBtn = document.getElementById('closeModalAfterPayment');
+    // --- Modal Logic Elements ---
+    const orderBtn = document.getElementById('orderBtn'); // "Order Now" button on main page
+    const orderModal = document.getElementById('orderModal'); // The modal container
+    const closeModalBtn = document.getElementById('closeModal'); // "Cancel" button in order summary
+    const closeModalAfterPaymentBtn = document.getElementById('closeModalAfterPayment'); // "Close" button on result page
     
-    // Steps elements
+    // Select all step containers within the modal
     const allSteps = document.querySelectorAll('#orderSummary, #userDetailsForm, #paypalPaymentSection, #paymentResult');
     
-    // Buttons
-    const proceedToPaymentBtn = document.getElementById('proceedToPayment');
-    const backToSummaryFromPaypalBtn = document.getElementById('backToSummaryFromPaypal');
-    const backToPaypalFromDetailsBtn = document.getElementById('backToPaypalFromDetails');
+    // Buttons for navigation within the modal
+    const proceedToPaymentBtn = document.getElementById('proceedToPayment'); // From summary to PayPal
+    const backToSummaryFromPaypalBtn = document.getElementById('backToSummaryFromPaypal'); // From PayPal to summary
+    const backToPaypalFromDetailsBtn = document.getElementById('backToPaypalFromDetails'); // From user details to PayPal
 
-    const userDetailsForm = document.getElementById('userDetailsForm'); 
-    const paymentResultTitle = document.getElementById('paymentResultTitle');
-    const paymentResultMessage = document.getElementById('paymentResultMessage');
+    const userDetailsForm = document.getElementById('userDetailsForm'); // User details form
+    const paymentResultTitle = document.getElementById('paymentResultTitle'); // Title for payment result
+    const paymentResultMessage = document.getElementById('paymentResultMessage'); // Message for payment result
 
-    // Quantity is fixed at 1
+    // Fixed quantity (always 1)
     const quantity = 1; 
-    let phoneNumberInput = null;
+    let phoneNumberInput = null; // Variable to hold Intl-Tel-Input instance
     let userDetails = {}; // Object to store user details temporarily
 
-    // Function to manage modal steps visibility
+    // --- Function to manage modal steps visibility ---
+    // Hides all steps then shows the specified step.
     function showStep(stepIdToShow) {
         allSteps.forEach(step => {
             if (step.id === stepIdToShow) {
-                step.classList.remove('hidden'); // Show this step
+                step.classList.remove('hidden'); // Show the current step
             } else {
-                step.classList.add('hidden'); // Hide other steps
+                step.classList.add('hidden'); // Hide all other steps
             }
         });
         
+        // Specific logic for PayPal Payment Section
         if (stepIdToShow === 'paypalPaymentSection') {
-            // Clear the container before re-rendering the button
             const paypalContainer = document.getElementById('paypal-container-V6P6N7UGNXQCG');
             if (paypalContainer) {
-                paypalContainer.innerHTML = ''; // Clear previous button instance
-                // Render the Hosted Button when this section is shown
+                paypalContainer.innerHTML = ''; // IMPORTANT: Clear previous button instance to prevent duplication/distortion
+                // Render the PayPal Hosted Button into its container.
+                // This ensures the button is properly re-rendered every time the user lands on this step.
                 paypal.HostedButtons({
-                    hostedButtonId: "V6P6N7UGNXQCG",
+                    hostedButtonId: "V6P6N7UGNXQCG", // The specific Hosted Button ID from your PayPal account
                 }).render("#paypal-container-V6P6N7UGNXQCG")
                 .then(() => {
-                    console.log("PayPal Hosted Button rendered.");
+                    console.log("PayPal Hosted Button rendered successfully.");
                 })
                 .catch(error => {
+                    // Log any errors during button rendering
                     console.error("Error rendering PayPal Hosted Button:", error);
+                    // Display a user-friendly error message if the button fails to load
                     if (paypalContainer) {
                         paypalContainer.innerHTML = '<p class="text-red-500 text-center">Failed to load PayPal button. Please try again or refresh the page.</p>';
                     }
                 });
             }
-        } else if (stepIdToShow === 'userDetailsForm') {
+        } 
+        // Specific logic for User Details Form (initialize phone input)
+        else if (stepIdToShow === 'userDetailsForm') {
+            // Initialize Intl-Tel-Input only if it hasn't been initialized yet
             if (!phoneNumberInput) {
                 const input = document.querySelector("#phone");
                 phoneNumberInput = window.intlTelInput(input, {
-                    initialCountry: "auto", 
+                    initialCountry: "auto", // Automatically detect initial country
                     geoIpLookup: function(callback) {
-                        // REMEMBER TO REPLACE THIS WITH YOUR REAL IPINFO API TOKEN!
+                        // Geo-IP lookup to suggest user's country for phone number.
+                        // IMPORTANT: REPLACE 'YOUR_IPINFO_TOKEN' with your actual IPinfo API token!
                         fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") 
                             .then(response => response.json())
                             .then(data => callback(data.country))
                             .catch(() => callback("us")); // Default to US if lookup fails
                     },
-                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js",
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js", // Utility script for formatting
                 });
             }
         }
     }
 
+    // Function to open the modal and show the order summary step
     function openModal() {
       orderModal.classList.remove('hidden'); 
       showStep('orderSummary'); 
     }
 
+    // Function to close the modal and reset its state
     function closeModal() {
       orderModal.classList.add('hidden'); 
-      userDetailsForm.reset(); 
-      userDetails = {}; 
+      userDetailsForm.reset(); // Clear the form fields
+      userDetails = {}; // Clear stored user details
+      // Destroy and nullify Intl-Tel-Input instance to prevent memory leaks/issues on re-open
       if (phoneNumberInput) {
           phoneNumberInput.destroy(); 
           phoneNumberInput = null;
       }
-       // Clear the PayPal Hosted Button container when closing the modal
+      // Clear the PayPal Hosted Button container when closing the modal
+      // This prepares it for a fresh render if the modal is opened again.
       const paypalContainer = document.getElementById('paypal-container-V6P6N7UGNXQCG');
       if (paypalContainer) {
           paypalContainer.innerHTML = ''; 
       }
     }
 
-    // Event Listeners
-    orderBtn.addEventListener('click', openModal);
-    closeModalBtn.addEventListener('click', closeModal);
-    closeModalAfterPaymentBtn.addEventListener('click', closeModal); 
+    // --- Event Listeners ---
+    orderBtn.addEventListener('click', openModal); // Open modal when "Order Now" is clicked
+    closeModalBtn.addEventListener('click', closeModal); // Close modal from order summary
+    closeModalAfterPaymentBtn.addEventListener('click', closeModal); // Close modal from payment result
 
+    // Navigate from Order Summary to PayPal Payment Section
     proceedToPaymentBtn.addEventListener('click', () => {
-      showStep('paypalPaymentSection'); // Go directly to PayPal payment
+      showStep('paypalPaymentSection'); 
     });
 
+    // Handle User Details Form submission
     userDetailsForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+      e.preventDefault(); // Prevent default form submission
 
+      // Validate phone number using Intl-Tel-Input
       if (phoneNumberInput && !phoneNumberInput.isValidNumber()) {
         alert("Please enter a valid phone number, including the correct country code.");
         return;
       }
 
+      // Validate other form fields using browser's built-in validation
       if (!userDetailsForm.checkValidity()) {
-        userDetailsForm.reportValidity();
+        userDetailsForm.reportValidity(); // Show validation messages
         return;
       }
       
-      // Store user details 
+      // Store collected user details in an object
       userDetails = {
             firstName: userDetailsForm.firstName.value.trim(),
             lastName: userDetailsForm.lastName.value.trim(),
@@ -426,26 +443,44 @@
 
         console.log("User Details Collected:", userDetails);
         
-        // This is where you would typically send these user details to your backend,
-        // likely along with confirmation that the PayPal Hosted Button payment was successful.
-        // Remember: PayPal Hosted Buttons handle the payment redirect on PayPal's side.
-        // You need a server-side process (e.g., PayPal IPN or Webhooks) to confirm payment
-        // and link it to these user details for fulfillment.
+        // --- IMPORTANT NOTE FOR PRODUCTION ---
+        // For PayPal Hosted Buttons, the actual payment processing and redirection
+        // happen on PayPal's server. Your client-side code here does NOT receive
+        // direct callbacks like 'onApprove' for Hosted Buttons.
+        //
+        // To confirm payment and link it to these user details for fulfillment:
+        // 1. In your PayPal Hosted Button settings, configure a 'Return URL'
+        //    (e.g., yourwebsite.com/paypal-success).
+        // 2. After successful payment, PayPal redirects the user to this URL.
+        // 3. On your server-side at the 'Return URL', you MUST implement logic
+        //    to verify the payment using PayPal's IPN (Instant Payment Notification)
+        //    or Webhooks. This is crucial to prevent fraud and ensure the payment
+        //    was legitimate before processing the order.
+        // 4. Once payment is server-side verified, then you would process the
+        //    collected user details and fulfill the order.
+        //
+        // This client-side code *cannot* securely verify a Hosted Button payment.
+        //
+        // For this demo, we are simply showing a success message on the frontend
+        // after the user submits their details, assuming the PayPal payment
+        // (which redirects away) was handled externally.
+        // --- END IMPORTANT NOTE ---
 
-        // For this demo, we'll just show success here after form submission.
+        // Display success message in the modal
         paymentResultTitle.textContent = 'Order Confirmed!';
         paymentResultMessage.innerHTML = `Thank you for your purchase! We've received your details and will process your order soon.`;
         showStep('paymentResult');
     });
 
-    // Back Buttons
+    // Back button from PayPal Payment Section to Order Summary
     backToSummaryFromPaypalBtn.addEventListener('click', () => {
       showStep('orderSummary');
     });
 
+    // Back button from User Details Form to PayPal Payment Section
     backToPaypalFromDetailsBtn.addEventListener('click', () => {
         showStep('paypalPaymentSection');
-        // The showStep function now handles re-rendering the button for this step
+        // The `showStep` function automatically re-renders the PayPal button for this step.
     });
   </script>
 </body>
