@@ -106,6 +106,12 @@
         max-width: 300px; /* Limit max width for better appearance if parent is too wide within the modal */
         margin: 0 auto; /* Center the button within its available width */
     }
+    /* Star rating styling */
+    .star-rating .star {
+        color: #ffc107; /* Gold color for stars */
+        font-size: 1.25rem; /* Adjust size as needed */
+        margin-right: 2px;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 text-gray-900 relative">
@@ -187,11 +193,15 @@
             <h3 class="text-3xl font-extrabold text-green-700 mb-4">Powerful Cooling Performance</h3>
             <p class="text-lg text-gray-700">Experience instant relief with AirFlow's robust fan, designed to deliver a powerful breeze that quickly cools down your personal space. Perfect for hot summer days.</p>
         </div>
-        <div class="relative min-h-[250px] md:min-h-0 flex items-center justify-center p-4"> <img src="photo_1.png" alt="Powerful Cooling Fan" class="w-full h-full object-contain rounded-lg transform scale-95" /> </div>
+        <div class="relative min-h-[250px] md:min-h-0 flex items-center justify-center p-4">
+            <img src="photo_1.png" alt="Powerful Cooling Fan" class="w-full h-full object-contain rounded-lg transform scale-95" />
+        </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 border-b border-gray-200 last:border-b-0">
-        <div class="relative min-h-[250px] md:min-h-0 md:order-1 flex items-center justify-center p-4"> <img src="photo_2.png" alt="Efficient Humidifier Mist" class="w-full h-full object-contain rounded-lg transform scale-95" /> </div>
+        <div class="relative min-h-[250px] md:min-h-0 md:order-1 flex items-center justify-center p-4">
+            <img src="photo_2.png" alt="Efficient Humidifier Mist" class="w-full h-full object-contain rounded-lg transform scale-95" />
+        </div>
         <div class="p-8 flex flex-col justify-center md:order-2">
             <h3 class="text-3xl font-extrabold text-green-700 mb-4">Optimal Humidity for Comfort</h3>
             <p class="text-lg text-gray-700">Combat dry air with the integrated humidifier, which adds a fine, cool mist to enhance comfort and improve air quality, especially in air-conditioned environments.</p>
@@ -203,11 +213,15 @@
             <h3 class="text-3xl font-extrabold text-green-700 mb-4">Sleek & Space-Saving Design</h3>
             <p class="text-lg text-gray-700">AirFlow boasts a modern, minimalist design that complements any room decor. Its compact footprint ensures it fits comfortably on your desk, nightstand, or living room table.</p>
         </div>
-        <div class="relative min-h-[250px] md:min-h-0 flex items-center justify-center p-4"> <img src="photo_3.png" alt="Compact Device on Desk" class="w-full h-full object-contain rounded-lg transform scale-95" /> </div>
+        <div class="relative min-h-[250px] md:min-h-0 flex items-center justify-center p-4">
+            <img src="photo_3.png" alt="Compact Device on Desk" class="w-full h-full object-contain rounded-lg transform scale-95" />
+        </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 border-b border-gray-200 last:border-b-0">
-        <div class="relative min-h-[250px] md:min-h-0 md:order-1 flex items-center justify-center p-4"> <img src="photo_4.png" alt="User Adjusting Controls" class="w-full h-full object-contain rounded-lg transform scale-95" /> </div>
+        <div class="relative min-h-[250px] md:min-h-0 md:order-1 flex items-center justify-center p-4">
+            <img src="photo_4.png" alt="User Adjusting Controls" class="w-full h-full object-contain rounded-lg transform scale-95" />
+        </div>
         <div class="p-8 flex flex-col justify-center md:order-2">
             <h3 class="text-3xl font-extrabold text-green-700 mb-4">Effortless Control & Customization</h3>
             <p class="text-lg text-gray-700">Intuitive controls allow you to easily switch between fan-only and humidifier modes, adjust fan speeds, and set mist levels to create your ideal microclimate.</p>
@@ -218,9 +232,54 @@
             <h3 class="text-3xl font-extrabold text-green-700 mb-4">Quiet Operation, Peaceful Environment</h3>
             <p class="text-lg text-gray-700">Enjoy cool, moisturized air without disruption. AirFlow operates with whisper-quiet efficiency, making it perfect for bedrooms, offices, or nurseries.</p>
         </div>
-        <div class="relative min-h-[250px] md:min-h-0 flex items-center justify-center p-4"> <img src="photo_5.png" alt="Person sleeping peacefully" class="w-full h-full object-contain rounded-lg transform scale-95" /> </div>
+        <div class="relative min-h-[250px] md:min-h-0 flex items-center justify-center p-4">
+            <img src="photo_5.png" alt="Person sleeping peacefully" class="w-full h-full object-contain rounded-lg transform scale-95" />
+        </div>
     </div>
 </div>
+
+<section class="w-full max-w-5xl mt-12 p-8 bg-white rounded-3xl shadow-2xl">
+    <h2 class="text-4xl font-extrabold text-center text-green-700 mb-8">What Our Happy Customers Say</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+            <img src="https://via.placeholder.com/80/E0E0E0/808080?text=User1" alt="Customer Avatar 1" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
+            <div class="star-rating mb-2">
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+            </div>
+            <p class="text-gray-700 italic mb-4">"This fan and humidifier combo is a game-changer! My room feels so much fresher and cooler. Absolutely love it."</p>
+            <p class="font-semibold text-green-700">- Ahmed M.</p>
+        </div>
+
+        <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+            <img src="https://via.placeholder.com/80/E0E0E0/808080?text=User2" alt="Customer Avatar 2" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
+            <div class="star-rating mb-2">
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+            </div>
+            <p class="text-gray-700 italic mb-4">"Quiet and efficient! I can sleep so much better now that the air isn't dry. Highly recommend AirFlow."</p>
+            <p class="font-semibold text-green-700">- Fatima Z.</p>
+        </div>
+
+        <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
+            <img src="https://via.placeholder.com/80/E0E0E0/808080?text=User3" alt="Customer Avatar 3" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
+            <div class="star-rating mb-2">
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+            </div>
+            <p class="text-gray-700 italic mb-4">"A must-have for summer! The design is sleek, and it works perfectly. Great value for money."</p>
+            <p class="font-semibold text-green-700">- Omar K.</p>
+        </div>
+
+        <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center md:col-span-2 lg:col-span-1 md:mx-auto lg:mx-0">
+            <img src="https://via.placeholder.com/80/E0E0E0/808080?text=User4" alt="Customer Avatar 4" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
+            <div class="star-rating mb-2">
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+            </div>
+            <p class="text-gray-700 italic mb-4">"I was skeptical at first, but AirFlow exceeded my expectations. My allergies are better, and the air feels so clean."</p>
+            <p class="font-semibold text-green-700">- Layla S.</p>
+        </div>
+
+    </div>
+</section>
 
 
   <div id="orderModal" class="fixed inset-0 hidden modal-bg z-50 overflow-auto p-6 flex items-center justify-center">
