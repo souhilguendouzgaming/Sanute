@@ -106,14 +106,22 @@
         max-width: 300px; /* Limit max width for better appearance if parent is too wide within the modal */
         margin: 0 auto; /* Center the button within its available width */
     }
-    /* Star rating styling */
+    
+    /* --- Star rating styling for existing testimonials --- */
     .star-rating .star {
+        color: #ffc107; /* Gold color for stars */
+        font-size: 1.25rem; /* Adjust size as needed */
+        margin-right: 2px;
+    }
+
+    /* --- Star rating styling for interactive input (Submit Your Review) --- */
+    .star-rating .star-input {
         color: #d1d5db; /* Light gray for unselected stars */
-        font-size: 1.5rem; /* Adjust size as needed */
+        font-size: 2rem; /* Larger for better tap target */
         cursor: pointer;
         transition: color 0.2s;
     }
-    .star-rating .star.filled {
+    .star-rating .star-input.filled {
         color: #ffc107; /* Gold color for filled stars */
     }
   </style>
@@ -249,7 +257,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a1.png" alt="Customer Avatar 1" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
             </div>
             <p class="text-gray-700 italic mb-4">"This fan and humidifier combo is a game-changer! My room feels so much fresher and cooler. Absolutely love it."</p>
             <p class="font-semibold text-green-700">- Ahmed M.</p>
@@ -258,7 +266,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a2.png" alt="Customer Avatar 2" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">☆</span>
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star-half">☆</span>
             </div>
             <p class="text-gray-700 italic mb-4">"Quiet and efficient! I can sleep so much better now that the air isn't dry. Highly recommend AirFlow."</p>
             <p class="font-semibold text-green-700">- Fatima Z.</p>
@@ -267,7 +275,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a3.png" alt="Customer Avatar 3" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
             </div>
             <p class="text-gray-700 italic mb-4">"A must-have for summer! The design is sleek, and it works perfectly. Great value for money."</p>
             <p class="font-semibold text-green-700">- Omar K.</p>
@@ -276,7 +284,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a4.png" alt="Customer Avatar 4" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
             </div>
             <p class="text-gray-700 italic mb-4">"I was skeptical at first, but AirFlow exceeded my expectations. My allergies are better, and the air feels so clean."</p>
             <p class="font-semibold text-green-700">- Layla S.</p>
@@ -285,7 +293,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a5.png" alt="Customer Avatar 5" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">☆</span>
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star-half">☆</span>
             </div>
             <p class="text-gray-700 italic mb-4">"This is exactly what I needed for my home office. Keeps the air comfortable all day. Five stars!"</p>
             <p class="font-semibold text-green-700">- Khalid H.</p>
@@ -294,7 +302,7 @@
         <div class="bg-gray-50 p-6 rounded-xl shadow-md flex flex-col items-center text-center">
             <img src="a6.png" alt="Customer Avatar 6" class="w-20 h-20 rounded-full object-cover mb-4 shadow-sm" />
             <div class="star-rating mb-2">
-                <span class="star" data-value="1">★</span><span class="star" data-value="2">★</span><span class="star" data-value="3">★</span><span class="star" data-value="4">★</span><span class="star" data-value="5">★</span>
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
             </div>
             <p class="text-gray-700 italic mb-4">"Compact, stylish, and effective. The AirFlow is a fantastic addition to my bedroom. Super happy with my purchase!"</p>
             <p class="font-semibold text-green-700">- Nora A.</p>
