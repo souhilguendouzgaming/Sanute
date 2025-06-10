@@ -34,7 +34,6 @@
       animation: smoothPaleRainbow 30s ease infinite alternate; /* 'alternate' makes it go back and forth smoothly */
     }
 
-    /* Keyframes for smooth pale rainbow background animation */
     @keyframes smoothPaleRainbow {
       0% {
         background-position: 0% 50%; /* Start from left side of the gradient */
@@ -106,7 +105,7 @@
         border-top-color: #374151; /* Darken arrow for visibility */
     }
     /* Crucial: Style for PayPal buttons container to ensure it's visible and not distorted */
-    #paypal-container-V6P6N7UGNXQCG { 
+    #paypal-button-container-V6P6N7UGNXQCG { /* Kept original ID as we are using hosted buttons */
         min-height: 50px; /* Standard height for PayPal buttons */
         width: 100%; /* Ensure it takes full width of its parent */
         max-width: 300px; /* Limit max width for better appearance if parent is too wide within the modal */
@@ -374,50 +373,53 @@
         <p class="text-sm text-gray-600 text-center">
             You will be redirected to PayPal to securely finalize your purchase.
         </p>
-        <div id="paypal-container-V6P6N7UGNXQCG" class="mt-4"></div>
-        <button type="button" id="backToSummaryFromPaypal" class="mt-2 text-green-600 hover:underline">
+        <div id="paypal-button-container-V6P6N7UGNXQCG" class="mt-4"></div> <button type="button" id="backToSummaryFromPaypal" class="mt-2 text-green-600 hover:underline">
           Back to Order Summary
         </button>
       </div>
 
-      <form id="userDetailsForm" data-step-id="userDetailsForm" class="hidden flex flex-col space-y-4" novalidate>
+      <form id="userDetailsForm" action="https://api.web3forms.com/submit" method="POST" data-step-id="userDetailsForm" class="hidden flex flex-col space-y-4" novalidate>
         <h2 class="text-2xl font-extrabold mb-4 text-green-700">Enter Your Shipping Details</h2>
+        <p class="text-sm text-gray-600 mb-4 text-center">Your payment has been confirmed. Please provide your shipping information below.</p>
+
+        <input type="hidden" name="access_key" value="0c72769a-b75c-4d48-bab7-a85770918894">
+        <input type="hidden" name="redirect" value="https://yourdomain.com/thank-you.html"> 
+        <input type="hidden" name="subject" value="New AirFlow Order">
+        <input type="hidden" name="Order ID" id="paypal_order_id_field"> <input type="hidden" name="Product Name" value="AirFlow Fan & Humidifier">
+        <input type="hidden" name="Product Price" value="25">
 
         <div>
           <label for="firstName" class="block font-semibold mb-1">First Name</label>
-          <input type="text" id="firstName" name="firstName" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="text" id="firstName" name="First Name" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
           <label for="lastName" class="block font-semibold mb-1">Last Name</label>
-          <input type="text" id="lastName" name="lastName" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="text" id="lastName" name="Last Name" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
           <label for="phone" class="block font-semibold mb-1">Phone Number</label>
-          <input type="tel" id="phone" name="phone" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="tel" id="phone" name="Phone Number" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
           <label for="instagram" class="block font-semibold mb-1">Instagram Handle (Optional)</label>
-          <input type="text" id="instagram" name="instagram" placeholder="@yourhandle" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="text" id="instagram" name="Instagram Handle" placeholder="@yourhandle" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
           <label for="district" class="block font-semibold mb-1">District / Neighborhood</label>
-          <input type="text" id="district" name="district" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="text" id="district" name="District/Neighborhood" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
           <label for="postalCode" class="block font-semibold mb-1">Postal Code</label>
-          <input type="text" id="postalCode" name="postalCode" required pattern="[0-9]{3,10}" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="text" id="postalCode" name="Postal Code" required pattern="[0-9]{3,10}" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <button type="submit" class="mt-4 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-lg">
           Submit Details
-        </button>
-        <button type="button" id="backToPaypalFromDetails" class="mt-2 text-green-600 hover:underline">
-          Back to Payment
         </button>
       </form>
 
@@ -432,10 +434,9 @@
     </div>
   </div>
 
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAUCLvbDp2j1GIS_wwJt4HH5fCLQ67rLeHKG3cRQX8G6z-DfANkcNfKRhFaPHMngRU8eE2JhpojbfAcok&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js"></script>
-
-  <script src="https://www.paypal.com/sdk/js?client-id=BAAUCLvbDp2j1GIS_wwJt4HH5fCLQ67rLeHKG3cRQX8G6z-DfANkcNfKRhFaPHMngRU8eE2JhpojbfAcok&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
 
   <script>
     // --- Countdown Timer Setup ---
@@ -483,19 +484,18 @@
     const closeModalBtn = document.getElementById('closeModal');
     const closeModalAfterPaymentBtn = document.getElementById('closeModalAfterPayment');
     
+    // Updated to reflect all steps
     const allSteps = document.querySelectorAll('#orderSummary, #userDetailsForm, #paypalPaymentSection, #paymentResult');
     
     const proceedToPaymentBtn = document.getElementById('proceedToPayment');
     const backToSummaryFromPaypalBtn = document.getElementById('backToSummaryFromPaypal');
-    const backToPaypalFromDetailsBtn = document.getElementById('backToPaypalFromDetails');
 
     const userDetailsForm = document.getElementById('userDetailsForm'); 
+    const paypalOrderIdField = document.getElementById('paypal_order_id_field'); // Field to store PayPal Order ID
     const paymentResultTitle = document.getElementById('paymentResultTitle');
     const paymentResultMessage = document.getElementById('paymentResultMessage');
 
-    const quantity = 1; 
     let phoneNumberInput = null;
-    let userDetails = {};
 
     // --- Function to manage modal steps visibility ---
     function showStep(stepIdToShow) {
@@ -507,31 +507,62 @@
             }
         });
         
+        // Initialize PayPal Hosted Buttons when the payment section is shown
         if (stepIdToShow === 'paypalPaymentSection') {
-            const paypalContainer = document.getElementById('paypal-container-V6P6N7UGNXQCG');
-            if (paypalContainer) {
-                paypalContainer.innerHTML = ''; 
+            const paypalButtonContainer = document.getElementById('paypal-button-container-V6P6N7UGNXQCG');
+            if (paypalButtonContainer) {
+                paypalButtonContainer.innerHTML = ''; // Clear previous buttons if any
                 paypal.HostedButtons({
-                    hostedButtonId: "V6P6N7UGNXQCG",
-                }).render("#paypal-container-V6P6N7UGNXQCG")
+                    hostedButtonId: "V6P6N7UGNXQCG", // Use your actual Hosted Button ID here
+                    // IMPORTANT: Add an onApprove function to capture data after successful payment
+                    onApprove: function(data) {
+                        console.log('Hosted Button Payment successful. Data:', data);
+                        // 'data' object for Hosted Buttons might be simpler, often just { orderID: '...' }
+                        
+                        // Populate the hidden PayPal Order ID field in your form
+                        if (paypalOrderIdField && data.orderID) {
+                            paypalOrderIdField.value = data.orderID;
+                        } else if (paypalOrderIdField) {
+                             // Fallback if orderID is not directly in data. Can use custom parameters if set up in hosted button.
+                             console.warn("PayPal Hosted Button data.orderID not found. If you need it, ensure it's passed or use Smart Buttons.");
+                             paypalOrderIdField.value = 'N/A'; // Or a placeholder
+                        }
+
+                        // Display confirmation message and then show the user details form
+                        paymentResultTitle.textContent = 'Payment Confirmed!';
+                        paymentResultMessage.innerHTML = `Your payment for $${unitPrice} has been processed. Order ID: ${data.orderID || 'Not Available'}.<br>Now, please enter your shipping details.`;
+                        showStep('userDetailsForm'); // Show the shipping details form
+                    },
+                    onCancel: function (data) {
+                        console.log('Payment cancelled by user', data);
+                        alert('Payment cancelled. You can try again or cancel the order.');
+                        showStep('orderSummary'); // Go back to order summary
+                    },
+                    onError: function (err) {
+                        console.error('PayPal button error', err);
+                        alert('An error occurred during payment. Please try again or contact support.');
+                        showStep('orderSummary'); // Go back to order summary
+                    }
+                }).render('#paypal-button-container-V6P6N7UGNXQCG') // Render the PayPal buttons
                 .then(() => {
                     console.log("PayPal Hosted Button rendered successfully.");
                 })
                 .catch(error => {
                     console.error("Error rendering PayPal Hosted Button:", error);
-                    if (paypalContainer) {
-                        paypalContainer.innerHTML = '<p class="text-red-500 text-center">Failed to load PayPal button. Please try again or refresh the page.</p>';
+                    if (paypalButtonContainer) {
+                        paypalButtonContainer.innerHTML = '<p class="text-red-500 text-center">Failed to load PayPal button. Please try again or refresh the page.</p>';
                     }
                 });
             }
         } 
+        // Initialize phone input for user details form
         else if (stepIdToShow === 'userDetailsForm') {
-            if (!phoneNumberInput) {
+            if (!phoneNumberInput) { // Initialize only once
                 const input = document.querySelector("#phone");
                 phoneNumberInput = window.intlTelInput(input, {
                     initialCountry: "auto", 
                     geoIpLookup: function(callback) {
-                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") 
+                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") // IMPORTANT: Replace YOUR_IPINFO_TOKEN
                             .then(response => response.json())
                             .then(data => callback(data.country))
                             .catch(() => callback("us")); 
@@ -552,12 +583,12 @@
     function closeModal() {
       orderModal.classList.add('hidden'); 
       userDetailsForm.reset(); 
-      userDetails = {}; 
       if (phoneNumberInput) {
-          phoneNumberInput.destroy(); 
+          phoneNumberInput.destroy(); // Clean up intlTelInput instance
           phoneNumberInput = null;
       }
-      const paypalContainer = document.getElementById('paypal-container-V6P6N7UGNXQCG');
+      // Clear PayPal button container if open
+      const paypalContainer = document.getElementById('paypal-button-container-V6P6N7UGNXQCG');
       if (paypalContainer) {
           paypalContainer.innerHTML = ''; 
       }
@@ -573,44 +604,29 @@
       showStep('paypalPaymentSection'); 
     });
 
-    // Handle User Details Form submission
+    // Handle User Details Form submission (Web3Forms will handle actual submission)
     userDetailsForm.addEventListener('submit', (e) => {
-      e.preventDefault(); 
+        // Basic client-side validation
+        if (phoneNumberInput && !phoneNumberInput.isValidNumber()) {
+            e.preventDefault(); // Stop default form submission
+            alert("Please enter a valid phone number, including the correct country code.");
+            return;
+        }
 
-      if (phoneNumberInput && !phoneNumberInput.isValidNumber()) {
-        alert("Please enter a valid phone number, including the correct country code.");
-        return;
-      }
-
-      if (!userDetailsForm.checkValidity()) {
-        userDetailsForm.reportValidity();
-        return;
-      }
-      
-      userDetails = {
-            firstName: userDetailsForm.firstName.value.trim(),
-            lastName: userDetailsForm.lastName.value.trim(),
-            phone: phoneNumberInput ? phoneNumberInput.getNumber() : userDetailsForm.phone.value.trim(), 
-            instagram: userDetailsForm.instagram.value.trim(),
-            district: userDetailsForm.district.value.trim(),
-            postalCode: userDetailsForm.postalCode.value.trim()
-        };
-
-        console.log("User Details Collected:", userDetails);
+        if (!userDetailsForm.checkValidity()) {
+            e.preventDefault(); // Stop default form submission
+            userDetailsForm.reportValidity(); // Show native browser validation messages
+            return;
+        }
         
-        paymentResultTitle.textContent = 'Order Confirmed!';
-        paymentResultMessage.innerHTML = `Thank you for your purchase! We've received your details and will process your order soon.`;
-        showStep('paymentResult');
+        // If validation passes, the form will automatically submit to Web3Forms
+        // because of `action="https://api.web3forms.com/submit"` and `method="POST"`
+        // The 'redirect' hidden input will handle the thank you page.
     });
 
     // Back button from PayPal Payment Section to Order Summary
     backToSummaryFromPaypalBtn.addEventListener('click', () => {
       showStep('orderSummary');
-    });
-
-    // Back button from User Details Form to PayPal Payment Section
-    backToPaypalFromDetailsBtn.addEventListener('click', () => {
-        showStep('paypalPaymentSection');
     });
 
     // --- Review Form Logic ---
