@@ -105,11 +105,11 @@
         border-top-color: #374151; /* Darken arrow for visibility */
     }
     /* Crucial: Style for PayPal buttons container to ensure it's visible and not distorted */
-    #paypal-button-container-V6P6N7UGNXQCG { /* Kept original ID as we are using hosted buttons */
-        min-height: 50px; /* Standard height for PayPal buttons */
-        width: 100%; /* Ensure it takes full width of its parent */
-        max-width: 300px; /* Limit max width for better appearance if parent is too wide within the modal */
-        margin: 0 auto; /* Center the button within its available width */
+    #paypal-container-EPUEGTQ42UJ7W { 
+        min-height: 50px; 
+        width: 100%; 
+        max-width: 300px; 
+        margin: 0 auto; 
     }
     
     /* --- Star rating styling for existing testimonials --- */
@@ -129,6 +129,63 @@
     .star-rating .star-input.filled {
         color: #ffc107; /* Gold color for filled stars */
     }
+
+    /* Styles for social icons container */
+    .social-icon-container {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem; /* Space between icons */
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Styles for the social icon links/containers */
+    .social-icon {
+        background-color: #fff; /* White background */
+        border: 1px solid #e5e7eb; /* Light border */
+        border-radius: 9999px; /* Fully rounded */
+        padding: 0.75rem; /* Padding around content (image) */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 3rem; /* Fixed width */
+        height: 3rem; /* Fixed height */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition on hover */
+    }
+
+    .social-icon:hover {
+        transform: translateY(-2px); /* Slight lift on hover */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+    }
+
+    /* Styling for the image inside the social icon container */
+    .social-icon img {
+        width: 100%; /* Make image fill the container */
+        height: 100%; /* Make image fill the container */
+        object-fit: contain; /* Ensure image fits within the container without cropping */
+    }
+
+    /* New styles for Free Delivery section */
+    .delivery-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem; /* Space between icon and text */
+        margin-top: 0.5rem; /* Space below price */
+        color: #38a169; /* Green color for delivery info */
+        font-weight: 600; /* Semi-bold text */
+    }
+
+    .delivery-info img {
+        width: 2rem; /* Size of the delivery icon */
+        height: 2rem;
+        object-fit: contain;
+    }
+
+    .delivery-info .highlight {
+        color: #10b981; /* A slightly brighter green for "Free" */
+        font-weight: 800; /* Extra bold for emphasis */
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 text-gray-900 relative">
@@ -146,6 +203,11 @@
         <span class="text-xl line-through text-gray-400">$50</span>
         <span class="text-4xl font-bold text-green-600">$25</span>
         <span class="discount-badge bg-green-100 text-green-600 px-3 py-1 rounded-full font-semibold select-none">50% OFF</span>
+      </div>
+      
+      <div class="delivery-info">
+        <img src="s.png" alt="Delivery Icon" />
+        <span><span class="highlight">Free</span> delivery</span>
       </div>
        
       <button id="orderBtn" class="pulse-button bg-green-600 text-white text-xl rounded-xl py-3 px-10 font-semibold hover:bg-green-700 transition duration-300 shadow-lg">
@@ -373,7 +435,19 @@
         <p class="text-sm text-gray-600 text-center">
             You will be redirected to PayPal to securely finalize your purchase.
         </p>
-        <div id="paypal-button-container-V6P6N7UGNXQCG" class="mt-4"></div> <button type="button" id="backToSummaryFromPaypal" class="mt-2 text-green-600 hover:underline">
+        <div id="paypal-container-EPUEGTQ42UJ7W" class="mt-4"></div>
+
+        <div class="social-icon-container">
+            <a href="https://wa.me/213561501175" target="_blank" class="social-icon" aria-label="Chat on WhatsApp">
+                <img src="w.png" alt="WhatsApp" /> 
+            </a>
+            <a href="https://www.instagram.com/sanutestore?igsh=YjVqYXI0eXEzNWgy" target="_blank" class="social-icon" aria-label="Visit us on Instagram">
+                <img src="instagram.png" alt="Instagram" />
+            </a>
+        </div>
+        <p class="text-center text-sm text-gray-500 -mt-2">Need help? Contact us!</p>
+        
+        <button type="button" id="backToSummaryFromPaypal" class="mt-2 text-green-600 hover:underline">
           Back to Order Summary
         </button>
       </div>
@@ -434,7 +508,7 @@
     </div>
   </div>
 
-  <script src="https://www.paypal.com/sdk/js?client-id=BAAUCLvbDp2j1GIS_wwJt4HH5fCLQ67rLeHKG3cRQX8G6z-DfANkcNfKRhFaPHMngRU8eE2JhpojbfAcok&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAb2BtQc4LBhJ325acNtsFgGSOBnrdSSsuoOiljDWcqvwg4RWtWoN5Rk7wEfO7mngRUipdNK_32LAN-qM&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js"></script>
 
@@ -509,41 +583,36 @@
         
         // Initialize PayPal Hosted Buttons when the payment section is shown
         if (stepIdToShow === 'paypalPaymentSection') {
-            const paypalButtonContainer = document.getElementById('paypal-button-container-V6P6N7UGNXQCG');
+            const paypalButtonContainer = document.getElementById('paypal-container-EPUEGTQ42UJ7W');
             if (paypalButtonContainer) {
                 paypalButtonContainer.innerHTML = ''; // Clear previous buttons if any
                 paypal.HostedButtons({
-                    hostedButtonId: "V6P6N7UGNXQCG", // Use your actual Hosted Button ID here
-                    // IMPORTANT: Add an onApprove function to capture data after successful payment
+                    hostedButtonId: "EPUEGTQ42UJ7W", // **IMPORTANT: This is your LIVE Hosted Button ID**
                     onApprove: function(data) {
                         console.log('Hosted Button Payment successful. Data:', data);
-                        // 'data' object for Hosted Buttons might be simpler, often just { orderID: '...' }
                         
-                        // Populate the hidden PayPal Order ID field in your form
                         if (paypalOrderIdField && data.orderID) {
                             paypalOrderIdField.value = data.orderID;
                         } else if (paypalOrderIdField) {
-                             // Fallback if orderID is not directly in data. Can use custom parameters if set up in hosted button.
                              console.warn("PayPal Hosted Button data.orderID not found. If you need it, ensure it's passed or use Smart Buttons.");
-                             paypalOrderIdField.value = 'N/A'; // Or a placeholder
+                             paypalOrderIdField.value = 'N/A'; 
                         }
 
-                        // Display confirmation message and then show the user details form
                         paymentResultTitle.textContent = 'Payment Confirmed!';
                         paymentResultMessage.innerHTML = `Your payment for $${unitPrice} has been processed. Order ID: ${data.orderID || 'Not Available'}.<br>Now, please enter your shipping details.`;
-                        showStep('userDetailsForm'); // Show the shipping details form
+                        showStep('userDetailsForm'); 
                     },
                     onCancel: function (data) {
                         console.log('Payment cancelled by user', data);
                         alert('Payment cancelled. You can try again or cancel the order.');
-                        showStep('orderSummary'); // Go back to order summary
+                        showStep('orderSummary'); 
                     },
                     onError: function (err) {
                         console.error('PayPal button error', err);
                         alert('An error occurred during payment. Please try again or contact support.');
-                        showStep('orderSummary'); // Go back to order summary
+                        showStep('orderSummary'); 
                     }
-                }).render('#paypal-button-container-V6P6N7UGNXQCG') // Render the PayPal buttons
+                }).render('#paypal-container-EPUEGTQ42UJ7W') 
                 .then(() => {
                     console.log("PayPal Hosted Button rendered successfully.");
                 })
@@ -555,14 +624,13 @@
                 });
             }
         } 
-        // Initialize phone input for user details form
         else if (stepIdToShow === 'userDetailsForm') {
-            if (!phoneNumberInput) { // Initialize only once
+            if (!phoneNumberInput) { 
                 const input = document.querySelector("#phone");
                 phoneNumberInput = window.intlTelInput(input, {
                     initialCountry: "auto", 
                     geoIpLookup: function(callback) {
-                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") // IMPORTANT: Replace YOUR_IPINFO_TOKEN
+                        fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") 
                             .then(response => response.json())
                             .then(data => callback(data.country))
                             .catch(() => callback("us")); 
@@ -584,11 +652,10 @@
       orderModal.classList.add('hidden'); 
       userDetailsForm.reset(); 
       if (phoneNumberInput) {
-          phoneNumberInput.destroy(); // Clean up intlTelInput instance
+          phoneNumberInput.destroy(); 
           phoneNumberInput = null;
       }
-      // Clear PayPal button container if open
-      const paypalContainer = document.getElementById('paypal-button-container-V6P6N7UGNXQCG');
+      const paypalContainer = document.getElementById('paypal-container-EPUEGTQ42UJ7W');
       if (paypalContainer) {
           paypalContainer.innerHTML = ''; 
       }
@@ -606,22 +673,17 @@
 
     // Handle User Details Form submission (Web3Forms will handle actual submission)
     userDetailsForm.addEventListener('submit', (e) => {
-        // Basic client-side validation
         if (phoneNumberInput && !phoneNumberInput.isValidNumber()) {
-            e.preventDefault(); // Stop default form submission
+            e.preventDefault(); 
             alert("Please enter a valid phone number, including the correct country code.");
             return;
         }
 
         if (!userDetailsForm.checkValidity()) {
-            e.preventDefault(); // Stop default form submission
-            userDetailsForm.reportValidity(); // Show native browser validation messages
+            e.preventDefault(); 
+            userDetailsForm.reportValidity(); 
             return;
         }
-        
-        // If validation passes, the form will automatically submit to Web3Forms
-        // because of `action="https://api.web3forms.com/submit"` and `method="POST"`
-        // The 'redirect' hidden input will handle the thank you page.
     });
 
     // Back button from PayPal Payment Section to Order Summary
@@ -667,7 +729,7 @@
 
     // Event listener for mouse leaving star container
     reviewStarsContainer.addEventListener('mouseout', () => {
-        updateStars(currentRating); // Revert to selected rating
+        updateStars(currentRating); 
     });
 
     // Handle review form submission
@@ -685,8 +747,6 @@
             return;
         }
 
-        // In a real application, you would send this data to a backend server.
-        // For now, we'll just log it and show a success message.
         console.log({
             name: reviewerName,
             rating: rating,
@@ -697,10 +757,10 @@
         reviewMessage.classList.remove('hidden', 'text-red-600');
         reviewMessage.classList.add('text-green-600');
         
-        reviewForm.reset(); // Clear the form
-        currentRating = 0; // Reset selected rating
+        reviewForm.reset(); 
+        currentRating = 0; 
         selectedRatingInput.value = 0;
-        updateStars(0); // Reset stars display
+        updateStars(0); 
     });
   </script>
 </body>
