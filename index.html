@@ -158,9 +158,10 @@
     .star-three-quarter {
         position: relative;
         display: inline-block;
-        font-size: 2rem; /* Make sure it matches the size of other stars */
-        color: #d1d5db; /* Gray for the empty part of the star */
-        /* Add the star character to this element directly for the base */
+        width: 2rem; /* Ensure it has a fixed width equal to its font-size */
+        height: 2rem; /* Ensure it has a fixed height equal to its font-size */
+        overflow: hidden; /* Hide anything outside its bounds */
+        vertical-align: middle; /* Align it with the text */
     }
 
     .star-three-quarter::before {
@@ -171,6 +172,18 @@
         width: 75%; /* Fill 75% of the star */
         overflow: hidden; /* Hide the overflowing part of the golden star */
         color: #ffc107; /* Gold for the filled part */
+        font-size: 2rem; /* Match the size of other stars */
+        line-height: 1; /* Ensure vertical alignment is correct */
+    }
+
+    .star-three-quarter::after {
+        content: '★'; /* The full star character for the empty part */
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: #d1d5db; /* Gray for the empty part */
+        font-size: 2rem; /* Match the size of other stars */
+        line-height: 1; /* Ensure vertical alignment is correct */
     }
   </style>
 </head>
