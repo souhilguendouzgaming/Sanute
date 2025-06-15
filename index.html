@@ -155,20 +155,21 @@
     }
 
     /* CSS for the three-quarter star */
-    .star-three-quarter-container {
+    .star-three-quarter {
         position: relative;
         display: inline-block;
-        font-size: 2rem; /* Match other star size */
-        color: #d1d5db; /* Gray for the empty part */
+        font-size: 2rem; /* Make sure it matches the size of other stars */
+        color: #d1d5db; /* Gray for the empty part of the star */
+        /* Add the star character to this element directly for the base */
     }
 
-    .star-three-quarter-container::before {
-        content: '★'; /* The full star character */
+    .star-three-quarter::before {
+        content: '★'; /* The full star character for the filled part */
         position: absolute;
         top: 0;
         left: 0;
         width: 75%; /* Fill 75% of the star */
-        overflow: hidden;
+        overflow: hidden; /* Hide the overflowing part of the golden star */
         color: #ffc107; /* Gold for the filled part */
     }
   </style>
@@ -192,7 +193,7 @@
             ★
             ★
           </span>
-          <span class="star-three-quarter-container"></span>
+          <span class="star-three-quarter"></span>
           <span class="ml-2">4.8 Stars (984 Reviews)</span>
         </p>
         <p>
