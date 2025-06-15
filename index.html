@@ -130,6 +130,29 @@
     .star-rating .star-input.filled {
         color: #ffc107; /* Gold color for filled stars */
     }
+
+    /* Styles for the new product rating section */
+    .product-stats {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        font-size: 1.125rem; /* text-lg */
+        color: #4b5563; /* text-gray-700 */
+    }
+
+    .product-stats p {
+        display: flex;
+        align-items: center;
+    }
+
+    .product-stats .stat-icon {
+        width: 1.5rem; /* w-6 */
+        height: 1.5rem; /* h-6 */
+        margin-right: 0.5rem; /* mr-2 */
+        display: inline-block; /* To allow sizing */
+        vertical-align: middle; /* Align with text */
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 text-gray-900 relative">
@@ -143,14 +166,16 @@
       <h1 class="text-5xl font-extrabold leading-tight text-green-600">Cool Your Air, Breathe Fresh</h1>
       <p class="text-lg text-gray-700">Introducing the 2-in-1 AirFlow Fan & Humidifier. Perfect for summer days and dry nights.</p>
        
-      <div class="flex items-center space-x-4 mb-4">
-        <div class="flex items-center">
-          <span class="text-yellow-400 text-2xl">★★★★☆</span> <span class="text-gray-700 ml-2 text-xl font-bold">4.8</span>
-          <span class="text-gray-500 ml-1 text-sm">(984 Reviews)</span>
-        </div>
-        <div class="text-gray-700 text-lg">
-          <span class="font-bold">11,567+</span> Sales <span class="text-green-600">🚀</span>
-        </div>
+      <div class="product-stats">
+        <p>
+          <span class="text-yellow-500 mr-1 text-2xl">✨</span> Rating: 4.8 Stars (984 Reviews)
+        </p>
+        <p>
+          <span class="text-gray-600 mr-1 text-2xl">📦</span> Sold: 11,567 units
+        </p>
+        <p>
+          <img src="s.png" alt="Free Shipping" class="stat-icon" /> FREE Shipping!
+        </p>
       </div>
 
       <div class="flex items-center space-x-4">
@@ -541,6 +566,7 @@
                 phoneNumberInput = window.intlTelInput(input, {
                     initialCountry: "auto", 
                     geoIpLookup: function(callback) {
+                        // **IMPORTANT:** Replace "YOUR_IPINFO_TOKEN" with your actual IPinfo API token
                         fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") 
                             .then(response => response.json())
                             .then(data => callback(data.country))
