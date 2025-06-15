@@ -34,6 +34,7 @@
       animation: smoothPaleRainbow 30s ease infinite alternate; /* 'alternate' makes it go back and forth smoothly */
     }
 
+    /* Keyframes for smooth pale rainbow background animation */
     @keyframes smoothPaleRainbow {
       0% {
         background-position: 0% 50%; /* Start from left side of the gradient */
@@ -105,11 +106,11 @@
         border-top-color: #374151; /* Darken arrow for visibility */
     }
     /* Crucial: Style for PayPal buttons container to ensure it's visible and not distorted */
-    #paypal-container-EPUEGTQ42UJ7W { 
-        min-height: 50px; 
-        width: 100%; 
-        max-width: 300px; 
-        margin: 0 auto; 
+    #paypal-container-V6P6N7UGNXQCG { 
+        min-height: 50px; /* Standard height for PayPal buttons */
+        width: 100%; /* Ensure it takes full width of its parent */
+        max-width: 300px; /* Limit max width for better appearance if parent is too wide within the modal */
+        margin: 0 auto; /* Center the button within its available width */
     }
     
     /* --- Star rating styling for existing testimonials --- */
@@ -129,63 +130,6 @@
     .star-rating .star-input.filled {
         color: #ffc107; /* Gold color for filled stars */
     }
-
-    /* Styles for social icons container */
-    .social-icon-container {
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem; /* Space between icons */
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    /* Styles for the social icon links/containers */
-    .social-icon {
-        background-color: #fff; /* White background */
-        border: 1px solid #e5e7eb; /* Light border */
-        border-radius: 9999px; /* Fully rounded */
-        padding: 0.75rem; /* Padding around content (image) */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 3rem; /* Fixed width */
-        height: 3rem; /* Fixed height */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-        transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition on hover */
-    }
-
-    .social-icon:hover {
-        transform: translateY(-2px); /* Slight lift on hover */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* More prominent shadow */
-    }
-
-    /* Styling for the image inside the social icon container */
-    .social-icon img {
-        width: 100%; /* Make image fill the container */
-        height: 100%; /* Make image fill the container */
-        object-fit: contain; /* Ensure image fits within the container without cropping */
-    }
-
-    /* New styles for Free Delivery section */
-    .delivery-info {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem; /* Space between icon and text */
-        margin-top: 0.5rem; /* Space below price */
-        color: #38a169; /* Green color for delivery info */
-        font-weight: 600; /* Semi-bold text */
-    }
-
-    .delivery-info img {
-        width: 2rem; /* Size of the delivery icon */
-        height: 2rem;
-        object-fit: contain;
-    }
-
-    .delivery-info .highlight {
-        color: #10b981; /* A slightly brighter green for "Free" */
-        font-weight: 800; /* Extra bold for emphasis */
-    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 text-gray-900 relative">
@@ -199,15 +143,20 @@
       <h1 class="text-5xl font-extrabold leading-tight text-green-600">Cool Your Air, Breathe Fresh</h1>
       <p class="text-lg text-gray-700">Introducing the 2-in-1 AirFlow Fan & Humidifier. Perfect for summer days and dry nights.</p>
        
+      <div class="flex items-center space-x-4 mb-4">
+        <div class="flex items-center">
+          <span class="text-yellow-400 text-2xl">★★★★☆</span> <span class="text-gray-700 ml-2 text-xl font-bold">4.8</span>
+          <span class="text-gray-500 ml-1 text-sm">(984 Reviews)</span>
+        </div>
+        <div class="text-gray-700 text-lg">
+          <span class="font-bold">11,567+</span> Sales <span class="text-green-600">🚀</span>
+        </div>
+      </div>
+
       <div class="flex items-center space-x-4">
         <span class="text-xl line-through text-gray-400">$50</span>
         <span class="text-4xl font-bold text-green-600">$25</span>
         <span class="discount-badge bg-green-100 text-green-600 px-3 py-1 rounded-full font-semibold select-none">50% OFF</span>
-      </div>
-      
-      <div class="delivery-info">
-        <img src="s.png" alt="Delivery Icon" />
-        <span><span class="highlight">Free</span> delivery</span>
       </div>
        
       <button id="orderBtn" class="pulse-button bg-green-600 text-white text-xl rounded-xl py-3 px-10 font-semibold hover:bg-green-700 transition duration-300 shadow-lg">
@@ -435,65 +384,50 @@
         <p class="text-sm text-gray-600 text-center">
             You will be redirected to PayPal to securely finalize your purchase.
         </p>
-        <div id="paypal-container-EPUEGTQ42UJ7W" class="mt-4"></div>
-
-        <div class="social-icon-container">
-            <a href="https://wa.me/213561501175" target="_blank" class="social-icon" aria-label="Chat on WhatsApp">
-                <img src="w.png" alt="WhatsApp" /> 
-            </a>
-            <a href="https://www.instagram.com/sanutestore?igsh=YjVqYXI0eXEzNWgy" target="_blank" class="social-icon" aria-label="Visit us on Instagram">
-                <img src="instagram.png" alt="Instagram" />
-            </a>
-        </div>
-        <p class="text-center text-sm text-gray-500 -mt-2">Need help? Contact us!</p>
-        
+        <div id="paypal-container-V6P6N7UGNXQCG" class="mt-4"></div>
         <button type="button" id="backToSummaryFromPaypal" class="mt-2 text-green-600 hover:underline">
           Back to Order Summary
         </button>
       </div>
 
-      <form id="userDetailsForm" action="https://api.web3forms.com/submit" method="POST" data-step-id="userDetailsForm" class="hidden flex flex-col space-y-4" novalidate>
+      <form id="userDetailsForm" data-step-id="userDetailsForm" class="hidden flex flex-col space-y-4" novalidate>
         <h2 class="text-2xl font-extrabold mb-4 text-green-700">Enter Your Shipping Details</h2>
-        <p class="text-sm text-gray-600 mb-4 text-center">Your payment has been confirmed. Please provide your shipping information below.</p>
-
-        <input type="hidden" name="access_key" value="0c72769a-b75c-4d48-bab7-a85770918894">
-        <input type="hidden" name="redirect" value="https://yourdomain.com/thank-you.html"> 
-        <input type="hidden" name="subject" value="New AirFlow Order">
-        <input type="hidden" name="Order ID" id="paypal_order_id_field"> <input type="hidden" name="Product Name" value="AirFlow Fan & Humidifier">
-        <input type="hidden" name="Product Price" value="25">
 
         <div>
           <label for="firstName" class="block font-semibold mb-1">First Name</label>
-          <input type="text" id="firstName" name="First Name" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="text" id="firstName" name="firstName" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
           <label for="lastName" class="block font-semibold mb-1">Last Name</label>
-          <input type="text" id="lastName" name="Last Name" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="text" id="lastName" name="lastName" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
           <label for="phone" class="block font-semibold mb-1">Phone Number</label>
-          <input type="tel" id="phone" name="Phone Number" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="tel" id="phone" name="phone" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
           <label for="instagram" class="block font-semibold mb-1">Instagram Handle (Optional)</label>
-          <input type="text" id="instagram" name="Instagram Handle" placeholder="@yourhandle" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="text" id="instagram" name="instagram" placeholder="@yourhandle" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
           <label for="district" class="block font-semibold mb-1">District / Neighborhood</label>
-          <input type="text" id="district" name="District/Neighborhood" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="text" id="district" name="district" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <div>
           <label for="postalCode" class="block font-semibold mb-1">Postal Code</label>
-          <input type="text" id="postalCode" name="Postal Code" required pattern="[0-9]{3,10}" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+          <input type="text" id="postalCode" name="postalCode" required pattern="[0-9]{3,10}" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
         </div>
 
         <button type="submit" class="mt-4 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition shadow-lg">
           Submit Details
+        </button>
+        <button type="button" id="backToPaypalFromDetails" class="mt-2 text-green-600 hover:underline">
+          Back to Payment
         </button>
       </form>
 
@@ -508,9 +442,10 @@
     </div>
   </div>
 
-  <script src="https://www.paypal.com/sdk/js?client-id=BAAb2BtQc4LBhJ325acNtsFgGSOBnrdSSsuoOiljDWcqvwg4RWtWoN5Rk7wEfO7mngRUipdNK_32LAN-qM&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.min.js"></script>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAUCLvbDp2j1GIS_wwJt4HH5fCLQ67rLeHKG3cRQX8G6z-DfANkcNfKRhFaPHMngRU8eE2JhpojbfAcok&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
 
   <script>
     // --- Countdown Timer Setup ---
@@ -558,18 +493,19 @@
     const closeModalBtn = document.getElementById('closeModal');
     const closeModalAfterPaymentBtn = document.getElementById('closeModalAfterPayment');
     
-    // Updated to reflect all steps
     const allSteps = document.querySelectorAll('#orderSummary, #userDetailsForm, #paypalPaymentSection, #paymentResult');
     
     const proceedToPaymentBtn = document.getElementById('proceedToPayment');
     const backToSummaryFromPaypalBtn = document.getElementById('backToSummaryFromPaypal');
+    const backToPaypalFromDetailsBtn = document.getElementById('backToPaypalFromDetails');
 
     const userDetailsForm = document.getElementById('userDetailsForm'); 
-    const paypalOrderIdField = document.getElementById('paypal_order_id_field'); // Field to store PayPal Order ID
     const paymentResultTitle = document.getElementById('paymentResultTitle');
     const paymentResultMessage = document.getElementById('paymentResultMessage');
 
+    const quantity = 1; 
     let phoneNumberInput = null;
+    let userDetails = {};
 
     // --- Function to manage modal steps visibility ---
     function showStep(stepIdToShow) {
@@ -581,51 +517,26 @@
             }
         });
         
-        // Initialize PayPal Hosted Buttons when the payment section is shown
         if (stepIdToShow === 'paypalPaymentSection') {
-            const paypalButtonContainer = document.getElementById('paypal-container-EPUEGTQ42UJ7W');
-            if (paypalButtonContainer) {
-                paypalButtonContainer.innerHTML = ''; // Clear previous buttons if any
+            const paypalContainer = document.getElementById('paypal-container-V6P6N7UGNXQCG');
+            if (paypalContainer) {
+                paypalContainer.innerHTML = ''; 
                 paypal.HostedButtons({
-                    hostedButtonId: "EPUEGTQ42UJ7W", // **IMPORTANT: This is your LIVE Hosted Button ID**
-                    onApprove: function(data) {
-                        console.log('Hosted Button Payment successful. Data:', data);
-                        
-                        if (paypalOrderIdField && data.orderID) {
-                            paypalOrderIdField.value = data.orderID;
-                        } else if (paypalOrderIdField) {
-                             console.warn("PayPal Hosted Button data.orderID not found. If you need it, ensure it's passed or use Smart Buttons.");
-                             paypalOrderIdField.value = 'N/A'; 
-                        }
-
-                        paymentResultTitle.textContent = 'Payment Confirmed!';
-                        paymentResultMessage.innerHTML = `Your payment for $${unitPrice} has been processed. Order ID: ${data.orderID || 'Not Available'}.<br>Now, please enter your shipping details.`;
-                        showStep('userDetailsForm'); 
-                    },
-                    onCancel: function (data) {
-                        console.log('Payment cancelled by user', data);
-                        alert('Payment cancelled. You can try again or cancel the order.');
-                        showStep('orderSummary'); 
-                    },
-                    onError: function (err) {
-                        console.error('PayPal button error', err);
-                        alert('An error occurred during payment. Please try again or contact support.');
-                        showStep('orderSummary'); 
-                    }
-                }).render('#paypal-container-EPUEGTQ42UJ7W') 
+                    hostedButtonId: "V6P6N7UGNXQCG",
+                }).render("#paypal-container-V6P6N7UGNXQCG")
                 .then(() => {
                     console.log("PayPal Hosted Button rendered successfully.");
                 })
                 .catch(error => {
                     console.error("Error rendering PayPal Hosted Button:", error);
-                    if (paypalButtonContainer) {
-                        paypalButtonContainer.innerHTML = '<p class="text-red-500 text-center">Failed to load PayPal button. Please try again or refresh the page.</p>';
+                    if (paypalContainer) {
+                        paypalContainer.innerHTML = '<p class="text-red-500 text-center">Failed to load PayPal button. Please try again or refresh the page.</p>';
                     }
                 });
             }
         } 
         else if (stepIdToShow === 'userDetailsForm') {
-            if (!phoneNumberInput) { 
+            if (!phoneNumberInput) {
                 const input = document.querySelector("#phone");
                 phoneNumberInput = window.intlTelInput(input, {
                     initialCountry: "auto", 
@@ -651,11 +562,12 @@
     function closeModal() {
       orderModal.classList.add('hidden'); 
       userDetailsForm.reset(); 
+      userDetails = {}; 
       if (phoneNumberInput) {
           phoneNumberInput.destroy(); 
           phoneNumberInput = null;
       }
-      const paypalContainer = document.getElementById('paypal-container-EPUEGTQ42UJ7W');
+      const paypalContainer = document.getElementById('paypal-container-V6P6N7UGNXQCG');
       if (paypalContainer) {
           paypalContainer.innerHTML = ''; 
       }
@@ -671,24 +583,44 @@
       showStep('paypalPaymentSection'); 
     });
 
-    // Handle User Details Form submission (Web3Forms will handle actual submission)
+    // Handle User Details Form submission
     userDetailsForm.addEventListener('submit', (e) => {
-        if (phoneNumberInput && !phoneNumberInput.isValidNumber()) {
-            e.preventDefault(); 
-            alert("Please enter a valid phone number, including the correct country code.");
-            return;
-        }
+      e.preventDefault(); 
 
-        if (!userDetailsForm.checkValidity()) {
-            e.preventDefault(); 
-            userDetailsForm.reportValidity(); 
-            return;
-        }
+      if (phoneNumberInput && !phoneNumberInput.isValidNumber()) {
+        alert("Please enter a valid phone number, including the correct country code.");
+        return;
+      }
+
+      if (!userDetailsForm.checkValidity()) {
+        userDetailsForm.reportValidity();
+        return;
+      }
+      
+      userDetails = {
+            firstName: userDetailsForm.firstName.value.trim(),
+            lastName: userDetailsForm.lastName.value.trim(),
+            phone: phoneNumberInput ? phoneNumberInput.getNumber() : userDetailsForm.phone.value.trim(), 
+            instagram: userDetailsForm.instagram.value.trim(),
+            district: userDetailsForm.district.value.trim(),
+            postalCode: userDetailsForm.postalCode.value.trim()
+        };
+
+        console.log("User Details Collected:", userDetails);
+        
+        paymentResultTitle.textContent = 'Order Confirmed!';
+        paymentResultMessage.innerHTML = `Thank you for your purchase! We've received your details and will process your order soon.`;
+        showStep('paymentResult');
     });
 
     // Back button from PayPal Payment Section to Order Summary
     backToSummaryFromPaypalBtn.addEventListener('click', () => {
       showStep('orderSummary');
+    });
+
+    // Back button from User Details Form to PayPal Payment Section
+    backToPaypalFromDetailsBtn.addEventListener('click', () => {
+        showStep('paypalPaymentSection');
     });
 
     // --- Review Form Logic ---
@@ -729,7 +661,7 @@
 
     // Event listener for mouse leaving star container
     reviewStarsContainer.addEventListener('mouseout', () => {
-        updateStars(currentRating); 
+        updateStars(currentRating); // Revert to selected rating
     });
 
     // Handle review form submission
@@ -747,6 +679,8 @@
             return;
         }
 
+        // In a real application, you would send this data to a backend server.
+        // For now, we'll just log it and show a success message.
         console.log({
             name: reviewerName,
             rating: rating,
@@ -757,10 +691,10 @@
         reviewMessage.classList.remove('hidden', 'text-red-600');
         reviewMessage.classList.add('text-green-600');
         
-        reviewForm.reset(); 
-        currentRating = 0; 
+        reviewForm.reset(); // Clear the form
+        currentRating = 0; // Reset selected rating
         selectedRatingInput.value = 0;
-        updateStars(0); 
+        updateStars(0); // Reset stars display
     });
   </script>
 </body>
