@@ -153,6 +153,24 @@
         display: inline-block; /* To allow sizing */
         vertical-align: middle; /* Align with text */
     }
+
+    /* CSS for the three-quarter star */
+    .star-three-quarter-container {
+        position: relative;
+        display: inline-block;
+        font-size: 2rem; /* Match other star size */
+        color: #d1d5db; /* Gray for the empty part */
+    }
+
+    .star-three-quarter-container::before {
+        content: '★'; /* The full star character */
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 75%; /* Fill 75% of the star */
+        overflow: hidden;
+        color: #ffc107; /* Gold for the filled part */
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 text-gray-900 relative">
@@ -167,8 +185,15 @@
       <p class="text-lg text-gray-700">Introducing the 2-in-1 AirFlow Fan & Humidifier. Perfect for summer days and dry nights.</p>
        
       <div class="product-stats">
-        <p>
-          <span class="text-yellow-500 mr-1 text-2xl">✨</span> Rating: 4.8 Stars (984 Reviews)
+        <p class="flex items-center">
+          <span class="text-yellow-500 text-2xl">
+            ★
+            ★
+            ★
+            ★
+          </span>
+          <span class="star-three-quarter-container"></span>
+          <span class="ml-2">4.8 Stars (984 Reviews)</span>
         </p>
         <p>
           <span class="text-gray-600 mr-1 text-2xl">📦</span> Sold: 11,567 units
