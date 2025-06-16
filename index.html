@@ -158,11 +158,11 @@
     .star-three-quarter {
         position: relative;
         display: inline-block;
-        width: 1em; /* Use 'em' for relative sizing based on font-size */
-        height: 1em; /* Use 'em' for relative sizing based on font-size */
-        overflow: hidden; /* Hide anything outside its bounds */
-        vertical-align: middle; /* Align it with the text */
-        font-size: 2rem; /* Match the size of other stars */ 
+        width: 1em; /* Ensures it's roughly the same width as a character */
+        height: 1em; /* Ensures it's roughly the same height as a character */
+        overflow: hidden;
+        vertical-align: middle;
+        font-size: 2rem; /* THIS IS KEY FOR SIZE: Makes it consistent with other stars in product stats */
     }
 
     .star-three-quarter::before {
@@ -170,11 +170,11 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 75%; /* Fill 75% of the star */
-        overflow: hidden; /* Hide the overflowing part of the golden star */
-        color: #ffc107; /* Gold for the filled part */
-        font-size: inherit; /* Use inherit to match the parent's font-size */
-        line-height: 1; /* Ensure vertical alignment is correct */
+        width: 75%; /* THIS IS KEY FOR FILL: Fills 75% of the star */
+        overflow: hidden;
+        color: #ffc107; /* THIS IS KEY FOR COLOR: Gold for the filled part */
+        font-size: inherit; /* Inherit size from parent .star-three-quarter */
+        line-height: 1;
     }
 
     .star-three-quarter::after {
@@ -182,9 +182,9 @@
         position: absolute;
         top: 0;
         left: 0;
-        color: #d1d5db; /* Gray for the empty part */
-        font-size: inherit; /* Use inherit to match the parent's font-size */
-        line-height: 1; /* Ensure vertical alignment is correct */
+        color: #d1d5db; /* THIS IS KEY FOR COLOR: Gray for the empty part */
+        font-size: inherit; /* Inherit size from parent .star-three-quarter */
+        line-height: 1;
     }
   </style>
 </head>
@@ -607,6 +607,8 @@
                     initialCountry: "auto", 
                     geoIpLookup: function(callback) {
                         // **IMPORTANT:** Replace "YOUR_IPINFO_TOKEN" with your actual IPinfo API token
+                        // You need to sign up for a free account at ipinfo.io to get a token.
+                        // For demonstration, a placeholder is used.
                         fetch("https://ipinfo.io/json?token=YOUR_IPINFO_TOKEN") 
                             .then(response => response.json())
                             .then(data => callback(data.country))
